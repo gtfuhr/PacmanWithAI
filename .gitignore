@@ -1,2 +1,6 @@
 .vscode/c_cpp_properties.json
 .vscode/settings.json
+src/physics.o
+src/main.o
+src/ai.o
+src/draw.o

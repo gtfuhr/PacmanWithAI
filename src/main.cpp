@@ -1,164 +1,110 @@
 //Comando para compilar:
-// g++  -Wall -std=c++11 -o main main.cpp tela.cpp ai.cpp physics.cpp -lallegro -lallegro_image -lallegro_primitives-lallegro_font -lallegro_ttf
-
+// make clean
+// make
 #include "init.hpp"
-#include <iostream>
-
-using namespace tela;
-using namespace geom;
+#include <fstream>
 
 struct Game
 {
     Player player;
-    Tela t; // estrutura que controla a tela
+    draw::Draw draw;
+    physics::Physics phy;
     Block maze[MAZE_SIDE_LENGHT][MAZE_SIDE_WIDTH];
-    int tecla; // ultima tecla apertada pelo usuario
-    ALLEGRO_BITMAP *background, *bloco,
-        *loss, *win;
 
-    // inicia estruturas principais do jogo
-    void inicia(void)
+    // Init the main structures of the game
+    void init(void)
     {
-        t.inicia(1000, 600, "PacMan");
-        carrega_fundo_fonte();
+        draw.t.inicia(1000, 1000, "PacMan");
+        draw.load_background();
+        load_maze();
         player.state = State::nothing;
     }
-
-    // atualiza o jogo, como se fosse um passo na execução
-    void atualiza(void)
+    void load_maze()
     {
-        // le ultima tecla
-        tecla = t.tecla();
-        // tecla Q termina
-        if (tecla != ALLEGRO_KEY_Q)
-        {
-            // faz o resto
-            move_figuras();
-            t.limpa();
-            desenha_fundo();
-            desenha_figuras();
-            t.mostra();
+        std::string line;
+        std::ifstream fileStre{MAZE_FILE};
+        int atual_j;
+        for (auto i = 0; std::getline(fileStre, line); i++)
+            for (auto j = 0; line[j] != '\0'; j++)
+                switch (line[j])
+                {
+                case '-':
+                    maze[i][j].type = BlockTypes::horizontal;
+                    break;
+                case '+':
+                    maze[i][j].type = BlockTypes::crossing;
+                    break;
+                case '0':
+                    maze[i][j].type = BlockTypes::wall;
+                    break;
+                case '|':
+                    maze[i][j].type = BlockTypes::vertical;
+                    break;
+                }
+    }
 
-            // espera 16.66 ms antes de atualizar a tela
-            t.espera(16.66);
+    void draw_map(void)
+    {
+        Retangulo wall;
+        wall.tam = {MAZE_WALL_WIDTH, MAZE_WALL_WIDTH};
+        for (int i = 0; i < MAZE_SIDE_LENGHT; i++)
+            for (int j = 0; j < MAZE_SIDE_WIDTH; j++)
+                switch (maze[i][j].type)
+                {
+                case BlockTypes::wall:
+                    wall.pos = {(float)j * MAZE_WALL_WIDTH + MOLDURE, (float)i * MAZE_WALL_LENGHT + MOLDURE};
+                    draw.t.retangulo(wall);
+                    break;
+                default:
+                    break;
+                }
+    }
+
+    // Updates the game
+    void update(void)
+    {
+        // Read last key
+        player.key = draw.t.tecla();
+        // The 'Q' key ends the game
+        if (player.key != ALLEGRO_KEY_Q)
+        {
+            // Do the rest
+            phy.move_figures();
+            draw.t.limpa();
+            draw_map();
+            draw.draw_background();
+            draw.draw_figures();
+            draw.t.mostra();
+            // Waits 16.66 ms, then updates the screen
+            draw.t.espera(16.66);
         }
         else
             player.state = State::end; // Changes the state of the game to end
     }
 
-    void desenha_fundo(void)
+    // Verify if the game ended
+    bool verifyEnd(void)
     {
-        al_draw_bitmap(background, 0, 0, 0);
-        al_flip_display();
-    }
-    void carrega_fundo_fonte()
-    {
-        background = al_load_bitmap(BACKGROUND_FILE);
-        if (!background)
-        {
-            fprintf(stderr, "failed to load background bitmap!\n");
-            exit(1);
-        }
-        win = al_load_bitmap(BACKGROUND_WIN_FILE);
-        if (!win)
-        {
-            fprintf(stderr, "failed to load win bitmap!\n");
-            exit(1);
-        }
-        loss = al_load_bitmap(BACKGROUND_LOSS_FILE);
-        if (!loss)
-        {
-            fprintf(stderr, "failed to load loss bitmap!\n");
-            exit(1);
-        }
-        bloco = al_load_bitmap(BLOCO_FILE);
-        if (!bloco)
-        {
-            fprintf(stderr, "failed to load laser bitmap!\n");
-            exit(1);
-        }
+        verifyVictory();
+        return player.state == State::nothing ? false : true;
     }
 
-    // verifica se o jogo terminou ou não
-    // - retorna TRUE quando  termina
-    // - retorna FALSE caso contrário
-    bool verifica_fim(void)
+    void verifyVictory()
     {
-        verifica_vitoria();
-        if (player.state == State::nothing)
-            return false;
-        else
-            return true;
-    }
-
-    void verifica_vitoria()
-    {
-        if (1)
+        if (!1)
             player.state = State::end;
-        if (1)
-            desenha_final();
-    }
-    void desenha_final()
-    {
-        Cor branco = {255, 255, 255};
-        Ponto localMensagem = {400, 400};
-        if (1 + 1)
-        {
-            al_draw_bitmap(loss, 0, 0, 0);
-            t.cor(branco);
-            t.texto(localMensagem, "You lost the game! D`:");
-        }
-        else
-        {
-            al_draw_bitmap(win, 0, 0, 0);
-            t.cor(branco);
-            t.texto(localMensagem, "You won the game! XD");
-        }
-        al_flip_display();
-        t.espera(5000);
-    }
-
-    void finaliza(void)
-    {
-        // fecha a tela
-        t.finaliza();
-        al_destroy_bitmap(background);
-        al_destroy_bitmap(win);
-        al_destroy_bitmap(loss);
-        al_destroy_bitmap(bloco);
-    }
-
-    // desenha todas as figuras e objetos na tela
-    void desenha_figuras()
-    {
-    }
-
-    void verifica_colisao(void)
-    {
-    }
-
-    void move_figuras(void)
-    {
-    }
-
-    void legenda(void)
-    {
-        std::cout << "Pressione: " << std::endl;
-        std::cout << " - 'a' ,'s' 'w' e 'd' para mover " << std::endl;
-        std::cout << " - 'esc' sair" << std::endl;
+        if (!1)
+            draw.draw_end();
     }
 };
 
 int main(int argc, char **argv)
 {
     Game game;
-
-    game.inicia();
-    game.legenda();
-    while (game.verifica_fim() == false)
-    {
-        game.atualiza();
-    }
-    game.finaliza();
+    game.init();
+    game.draw.draw_help();
+    while (game.verifyEnd() == false)
+        game.update();
+    game.draw.finish();
     return 0;
 }
