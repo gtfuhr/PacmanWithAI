@@ -16,7 +16,9 @@ using namespace geom;
 #define PACMAN_FILE "img/pacman.bmp"
 #define MAZE_FILE "data/maze.txt"
 
-#define MAZE_SIDE_LENGHT 36
+#define SCREEN_WIDTH 490
+#define SCREEN_LENGTH 630
+#define MAZE_SIDE_LENGHT 37
 #define MAZE_SIDE_WIDTH 29
 #define MAZE_WALL_WIDTH 15
 #define MAZE_WALL_LENGHT 15
@@ -35,6 +37,7 @@ enum BlockTypes
     horizontal,
     crossing,
     wall,
+    spawn,
 };
 
 struct Block
@@ -48,6 +51,12 @@ struct Player
     State state;
     Cor color;
     int key; // Last key pressed by the user
+};
+
+struct Pacman
+{
+    Cor color;
+    Circulo circle;
 };
 
 struct Ghost

@@ -14,7 +14,7 @@ struct Game
     // Init the main structures of the game
     void init(void)
     {
-        draw.t.inicia(1000, 1000, "PacMan");
+        draw.t.inicia(SCREEN_WIDTH, SCREEN_LENGTH, "PAC MAN");
         draw.load_background();
         load_maze();
         player.state = State::nothing;
@@ -23,7 +23,6 @@ struct Game
     {
         std::string line;
         std::ifstream fileStre{MAZE_FILE};
-        int atual_j;
         for (auto i = 0; std::getline(fileStre, line); i++)
             for (auto j = 0; line[j] != '\0'; j++)
                 switch (line[j])
@@ -40,6 +39,9 @@ struct Game
                 case '|':
                     maze[i][j].type = BlockTypes::vertical;
                     break;
+                case '*':
+                    maze[i][j].type = BlockTypes::spawn;
+                    break;
                 }
     }
 
@@ -55,9 +57,74 @@ struct Game
                     wall.pos = {(float)j * MAZE_WALL_WIDTH + MOLDURE, (float)i * MAZE_WALL_LENGHT + MOLDURE};
                     draw.t.retangulo(wall);
                     break;
+                case BlockTypes::spawn:
+
                 default:
                     break;
                 }
+    }
+
+
+    void draw_option_switch(int option){
+        switch(option){
+            case 1:
+                draw.t.cor({220, 0, 0});
+                draw.t.texto2({SCREEN_WIDTH/2, 275}, "PLAY");
+                draw.t.cor({255, 255, 0});
+                draw.t.texto2({SCREEN_WIDTH/2, 325}, "SCORES");
+                draw.t.texto2({SCREEN_WIDTH/2, 375}, "QUIT");
+                break;
+
+            case 2:
+                draw.t.cor({255, 255, 0});
+                draw.t.texto2({SCREEN_WIDTH/2, 275}, "PLAY");
+                draw.t.cor({220, 0, 0});
+                draw.t.texto2({SCREEN_WIDTH/2, 325}, "SCORES");
+                draw.t.cor({255, 255, 0});
+                draw.t.texto2({SCREEN_WIDTH/2, 375}, "QUIT");
+                break;
+
+            case 3:
+                draw.t.cor({255, 255, 0});
+                draw.t.texto2({SCREEN_WIDTH/2, 275}, "PLAY");
+                draw.t.texto2({SCREEN_WIDTH/2, 325}, "SCORES");
+                draw.t.cor({220, 0, 0});
+                draw.t.texto2({SCREEN_WIDTH/2, 375}, "QUIT");
+                break;
+
+            default:
+                draw.t.cor({255, 255, 0});
+                draw.t.texto2({SCREEN_WIDTH/2, 275}, "PLAY");
+                draw.t.texto2({SCREEN_WIDTH/2, 325}, "SCORES");
+                draw.t.texto2({SCREEN_WIDTH/2, 375}, "QUIT");
+                option = 1;
+        }        
+    }
+
+
+    void draw_main(void)
+    {
+        draw.t.cor({0, 0, 255});
+        draw.t.texto({SCREEN_WIDTH/2, 125}, "PAC-MAN");
+        int option = 1;
+
+        draw_option_switch(option);
+
+        if(player.key == ALLEGRO_KEY_W){
+            if(option != 1){
+                option--;
+            }
+        }
+
+        if(player.key == ALLEGRO_KEY_S){
+            if(option != 3){
+                option++;
+            }
+        }
+
+        /*if(draw.t.tecla() == ALLEGRO_KEY_ENTER){
+            return option;
+        }*/
     }
 
     // Updates the game
@@ -71,9 +138,10 @@ struct Game
             // Do the rest
             phy.move_figures();
             draw.t.limpa();
-            draw_map();
+            draw_main();
+            //draw_map();
             draw.draw_background();
-            draw.draw_figures();
+            //draw.draw_figures();
             draw.t.mostra();
             // Waits 16.66 ms, then updates the screen
             draw.t.espera(16.66);

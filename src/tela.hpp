@@ -28,6 +28,7 @@
 
 #include <allegro5/allegro.h>
 #include <allegro5/allegro_font.h>
+#include <allegro5/allegro_ttf.h>
 #include <allegro5/allegro_image.h>
 #include <allegro5/allegro_color.h>
 #include <allegro5/allegro_primitives.h>
@@ -56,6 +57,7 @@ struct Tela
     ALLEGRO_COLOR ac_cor;       // cor padrao
     ALLEGRO_EVENT_QUEUE *queue; // fila de eventos
     ALLEGRO_FONT *fonte;        // fonte padrao
+    ALLEGRO_FONT *fonte2;       // mais uma fonte pq o allegro tem dessas
     /* ALLEGRO_TIMER *timer;  // timer */
     Retangulo janela; // retangulo que contem nossa janela
     Tamanho tam;      // tamanho da janela
@@ -83,6 +85,9 @@ struct Tela
 
     // escreve o texto s a partir da posicao p da tela
     void texto(Ponto p, const char *s);
+
+    // escreve o texto s a partir da posicao p da tela
+    void texto2(Ponto p, const char *s);
 
     // retorna o codigo da proxima tecla apertada (ou 0, se nao tiver tecla
     // alguma)

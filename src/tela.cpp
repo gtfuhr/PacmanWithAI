@@ -120,10 +120,12 @@ void Tela::inicia(int larg, int alt, const char *nome)
 
     /* configura fonte */
     al_init_font_addon();
+    al_init_ttf_addon();
     al_init_image_addon();
-    fonte = al_load_bitmap_font("data/a4_font.tga");
+    fonte = al_load_ttf_font("data/PAC-BIT.ttf", 64, 0);
+    fonte2 = al_load_ttf_font("data/PAC-BIT.ttf", 32, 0);
     // fonte = al_load_font("data/PAC-FONT.ttf", 0, 0);
-    if (!fonte)
+    if (!fonte || !fonte2)
     {
         std::cerr << "falha ao carregar fonte do allegro" << std::endl;
         std::abort();
@@ -283,7 +285,13 @@ int Tela::strlen(const char *s) const
 void Tela::texto(Ponto p, const char *s)
 {
     /* escreve o texto s na posicao p da tela */
-    al_draw_text(fonte, ac_cor, XU2X(p.x), YU2X(p.y), ALLEGRO_ALIGN_LEFT, s);
+    al_draw_text(fonte, ac_cor, XU2X(p.x), YU2X(p.y), ALLEGRO_ALIGN_CENTRE, s);
+}
+
+void Tela::texto2(Ponto p, const char *s)
+{
+    /* escreve o texto s na posicao p da tela */
+    al_draw_text(fonte2, ac_cor, XU2X(p.x), YU2X(p.y), ALLEGRO_ALIGN_CENTRE, s);
 }
 
 Ponto Tela::rato()

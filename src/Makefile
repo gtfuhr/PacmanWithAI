@@ -2,7 +2,7 @@
 CXX = g++
 CXXFLAGS = -g -std=c++11 -Wall 
 LDFLAGS = -lallegro -lallegro_main \
-    -lallegro_color -lallegro_font -lallegro_primitives -lallegro_image
+    -lallegro_color -lallegro_font -lallegro_ttf -lallegro_primitives -lallegro_image
 
 all: main
 
