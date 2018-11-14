@@ -18,7 +18,9 @@ struct Game
         draw.load_background();
         load_maze();
         player.state = State::nothing;
+        player.option = 1;
     }
+
     void load_maze()
     {
         std::string line;
@@ -66,6 +68,7 @@ struct Game
 
 
     void draw_option_switch(int option){
+        std::cout << option << std::endl;
         switch(option){
             case 1:
                 draw.t.cor({220, 0, 0});
@@ -91,13 +94,6 @@ struct Game
                 draw.t.cor({220, 0, 0});
                 draw.t.texto2({SCREEN_WIDTH/2, 375}, "QUIT");
                 break;
-
-            default:
-                draw.t.cor({255, 255, 0});
-                draw.t.texto2({SCREEN_WIDTH/2, 275}, "PLAY");
-                draw.t.texto2({SCREEN_WIDTH/2, 325}, "SCORES");
-                draw.t.texto2({SCREEN_WIDTH/2, 375}, "QUIT");
-                option = 1;
         }        
     }
 
@@ -105,25 +101,25 @@ struct Game
     void draw_main(void)
     {
         draw.t.cor({0, 0, 255});
-        draw.t.texto({SCREEN_WIDTH/2, 125}, "PAC-MAN");
-        int option = 1;
-
-        draw_option_switch(option);
+        draw.t.texto({SCREEN_WIDTH/2, 125}, "PACMAN");
 
         if(player.key == ALLEGRO_KEY_W){
-            if(option != 1){
-                option--;
+            player.option--;
+            if(player.option < 1){
+                player.option = 3;
             }
         }
 
         if(player.key == ALLEGRO_KEY_S){
-            if(option != 3){
-                option++;
+            player.option++;
+            if(player.option > 3){
+                player.option = 1; 
             }
         }
 
+        draw_option_switch(player.option);
+
         /*if(draw.t.tecla() == ALLEGRO_KEY_ENTER){
-            return option;
         }*/
     }
 

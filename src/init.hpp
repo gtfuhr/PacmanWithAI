@@ -51,6 +51,7 @@ struct Player
     State state;
     Cor color;
     int key; // Last key pressed by the user
+    int option;
 };
 
 struct Pacman
