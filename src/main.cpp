@@ -11,10 +11,14 @@ struct Game
     physics::Physics phy;
     Block maze[MAZE_SIDE_LENGHT][MAZE_SIDE_WIDTH];
 
+    const char *options[3] = {"PLAY",
+                              "SCORE",
+                              "QUIT"};
+
     // Init the main structures of the game
     void init(void)
     {
-        draw.t.inicia(SCREEN_WIDTH, SCREEN_LENGTH, "PAC MAN");
+        draw.t.inicia(SCREEN_WIDTH, SCREEN_LENGTH, "PACMAN");
         draw.load_background();
         load_maze();
         player.state = State::nothing;
@@ -68,40 +72,24 @@ struct Game
 
 
     void draw_option_switch(int option){
-        std::cout << option << std::endl;
-        switch(option){
-            case 1:
+        for(auto i = 0; i < 3; i++){
+            if((i+1) == option)
                 draw.t.cor({220, 0, 0});
-                draw.t.texto2({SCREEN_WIDTH/2, 275}, "PLAY");
+            else
                 draw.t.cor({255, 255, 0});
-                draw.t.texto2({SCREEN_WIDTH/2, 325}, "SCORES");
-                draw.t.texto2({SCREEN_WIDTH/2, 375}, "QUIT");
-                break;
 
-            case 2:
-                draw.t.cor({255, 255, 0});
-                draw.t.texto2({SCREEN_WIDTH/2, 275}, "PLAY");
-                draw.t.cor({220, 0, 0});
-                draw.t.texto2({SCREEN_WIDTH/2, 325}, "SCORES");
-                draw.t.cor({255, 255, 0});
-                draw.t.texto2({SCREEN_WIDTH/2, 375}, "QUIT");
-                break;
+            float mult = i * 50;
 
-            case 3:
-                draw.t.cor({255, 255, 0});
-                draw.t.texto2({SCREEN_WIDTH/2, 275}, "PLAY");
-                draw.t.texto2({SCREEN_WIDTH/2, 325}, "SCORES");
-                draw.t.cor({220, 0, 0});
-                draw.t.texto2({SCREEN_WIDTH/2, 375}, "QUIT");
-                break;
-        }        
+            draw.t.texto2({SCREEN_WIDTH/2, 275 + mult}, options[i]);
+        }
     }
 
 
     void draw_main(void)
     {
         draw.t.cor({0, 0, 255});
-        draw.t.texto({SCREEN_WIDTH/2, 125}, "PACMAN");
+        draw.t.texto({SCREEN_WIDTH/2, 125}, "PAC  MAN");
+        draw.t.image_menu({SCREEN_WIDTH/2 - 50, 80});
 
         if(player.key == ALLEGRO_KEY_W){
             player.option--;
@@ -117,10 +105,16 @@ struct Game
             }
         }
 
-        draw_option_switch(player.option);
+        if(player.key == ALLEGRO_KEY_ENTER){
+            switch(player.option){
+                case 1:
+                case 2:
+                case 3:
+                    player.state = State::end;
+            }
+        }
 
-        /*if(draw.t.tecla() == ALLEGRO_KEY_ENTER){
-        }*/
+        draw_option_switch(player.option);
     }
 
     // Updates the game
@@ -140,7 +134,7 @@ struct Game
             //draw.draw_figures();
             draw.t.mostra();
             // Waits 16.66 ms, then updates the screen
-            draw.t.espera(16.66);
+            draw.t.espera(33.33);
         }
         else
             player.state = State::end; // Changes the state of the game to end

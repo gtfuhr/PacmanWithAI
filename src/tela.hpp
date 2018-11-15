@@ -58,6 +58,7 @@ struct Tela
     ALLEGRO_EVENT_QUEUE *queue; // fila de eventos
     ALLEGRO_FONT *fonte;        // fonte padrao
     ALLEGRO_FONT *fonte2;       // mais uma fonte pq o allegro tem dessas
+    ALLEGRO_BITMAP *pacmanbmp;   // paczinho maroto
     /* ALLEGRO_TIMER *timer;  // timer */
     Retangulo janela; // retangulo que contem nossa janela
     Tamanho tam;      // tamanho da janela
@@ -88,6 +89,8 @@ struct Tela
 
     // escreve o texto s a partir da posicao p da tela
     void texto2(Ponto p, const char *s);
+
+    void image_menu(Ponto p);
 
     // retorna o codigo da proxima tecla apertada (ou 0, se nao tiver tecla
     // alguma)
