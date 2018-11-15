@@ -116,15 +116,27 @@ void Tela::inicia(int larg, int alt, const char *nome)
     /* instala o driver de mouse e teclado */
     al_install_mouse();
     al_install_keyboard();
+    al_install_audio();
     al_init_primitives_addon();
 
     /* configura fonte */
     al_init_font_addon();
     al_init_ttf_addon();
+    /* configura bmp */
     al_init_image_addon();
+    /* configura o audio */
+    al_init_acodec_addon();
+
     pacmanbmp = al_load_bitmap("img/pacmenu.png");
+
     fonte = al_load_ttf_font("data/PAC-BIT.ttf", 56, 0);
     fonte2 = al_load_ttf_font("data/PAC-BIT.ttf", 32, 0);
+
+    menuMusic = al_load_sample("data/menu.ogg");
+    menuScroll = al_load_sample("data/menuscroll.wav");
+    menuSelect = al_load_sample("data/menuselect.wav");
+
+    al_reserve_samples(3);
     // fonte = al_load_font("data/PAC-FONT.ttf", 0, 0);
     
     if (!fonte || !fonte2)
@@ -180,6 +192,10 @@ void Tela::finaliza()
 {
     /* o programa vai morrer, o fim da conexao com o servidor X fecha tudo */
     al_destroy_display(display);
+    al_destroy_bitmap(pacmanbmp);
+    al_destroy_sample(menuMusic);
+    al_destroy_sample(menuScroll);
+    al_destroy_sample(menuSelect);
     al_destroy_event_queue(queue);
 }
 
@@ -303,6 +319,18 @@ void Tela::texto2(Ponto p, const char *s)
 
 void Tela::image_menu(Ponto p){
     al_draw_bitmap(pacmanbmp, XU2X(p.x), YU2X(p.y), 0);
+}
+
+void Tela::play_menuMusic(void){
+    al_play_sample(menuMusic, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, 0);
+}
+
+void Tela::play_menuScroll(void){
+    al_play_sample(menuScroll, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, 0);
+}
+
+void Tela::play_menuSelect(void){
+    al_play_sample(menuSelect, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, 0);
 }
 
 Ponto Tela::rato()

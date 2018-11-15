@@ -32,6 +32,8 @@
 #include <allegro5/allegro_image.h>
 #include <allegro5/allegro_color.h>
 #include <allegro5/allegro_primitives.h>
+#include <allegro5/allegro_acodec.h>
+#include <allegro5/allegro_audio.h>
 
 #include "geom.hpp"
 
@@ -59,6 +61,9 @@ struct Tela
     ALLEGRO_FONT *fonte;        // fonte padrao
     ALLEGRO_FONT *fonte2;       // mais uma fonte pq o allegro tem dessas
     ALLEGRO_BITMAP *pacmanbmp;   // paczinho maroto
+    ALLEGRO_SAMPLE *menuMusic;
+    ALLEGRO_SAMPLE *menuScroll;
+    ALLEGRO_SAMPLE *menuSelect;
     /* ALLEGRO_TIMER *timer;  // timer */
     Retangulo janela; // retangulo que contem nossa janela
     Tamanho tam;      // tamanho da janela
@@ -91,6 +96,12 @@ struct Tela
     void texto2(Ponto p, const char *s);
 
     void image_menu(Ponto p);
+
+    void play_menuMusic(void);
+
+    void play_menuScroll(void);
+
+    void play_menuSelect(void);
 
     // retorna o codigo da proxima tecla apertada (ou 0, se nao tiver tecla
     // alguma)

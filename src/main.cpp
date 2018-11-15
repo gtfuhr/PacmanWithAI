@@ -10,6 +10,7 @@ struct Game
     draw::Draw draw;
     physics::Physics phy;
     Block maze[MAZE_SIDE_LENGHT][MAZE_SIDE_WIDTH];
+    int blink;
 
     const char *options[3] = {"PLAY",
                               "SCORE",
@@ -19,10 +20,12 @@ struct Game
     void init(void)
     {
         draw.t.inicia(SCREEN_WIDTH, SCREEN_LENGTH, "PACMAN");
+        draw.t.play_menuMusic();
         draw.load_background();
         load_maze();
         player.state = State::nothing;
-        player.option = 1;
+        player.option = 0;
+        blink = 0;
     }
 
     void load_maze()
@@ -91,30 +94,51 @@ struct Game
         draw.t.texto({SCREEN_WIDTH/2, 125}, "PAC  MAN");
         draw.t.image_menu({SCREEN_WIDTH/2 - 50, 80});
 
-        if(player.key == ALLEGRO_KEY_W){
-            player.option--;
-            if(player.option < 1){
-                player.option = 3;
+        if(player.option == 0){
+            if(blink > 30) blink = 0;
+            
+            if(blink < 15){
+                draw.t.cor({220, 0, 0});
+                draw.t.texto2({SCREEN_WIDTH/2, 345}, "PRESS 'ENTER'");
             }
-        }
 
-        if(player.key == ALLEGRO_KEY_S){
-            player.option++;
-            if(player.option > 3){
-                player.option = 1; 
+            if(player.key == ALLEGRO_KEY_ENTER){
+                draw.t.play_menuSelect();
+                player.option = 1;
             }
-        }
 
-        if(player.key == ALLEGRO_KEY_ENTER){
-            switch(player.option){
-                case 1:
-                case 2:
-                case 3:
-                    player.state = State::end;
+            blink++;
+        }
+        else{
+            if(player.key == ALLEGRO_KEY_W){
+                player.option--;
+                draw.t.play_menuScroll();
+                if(player.option < 1){
+                    player.option = 3;
+                }
             }
-        }
 
-        draw_option_switch(player.option);
+            if(player.key == ALLEGRO_KEY_S){
+                player.option++;
+                draw.t.play_menuScroll();
+                if(player.option > 3){
+                    player.option = 1; 
+                }
+            }
+
+            if(player.key == ALLEGRO_KEY_ENTER){
+                draw.t.play_menuSelect();
+                switch(player.option){
+                    case 1:
+                    case 2:
+                    case 3:
+                        sleep(1);
+                        player.state = State::end;
+                }
+            }
+
+            draw_option_switch(player.option);
+        }
     }
 
     // Updates the game
