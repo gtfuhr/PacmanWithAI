@@ -1,20 +1,4 @@
 #pragma once
-#include "physics.hpp"
-#include "ai.hpp"
-#include "geom.hpp"
-#include "tela.hpp"
-#include "draw.hpp"
-using namespace tela;
-using namespace geom;
-
-#include <iostream>
-
-#define BACKGROUND_LOSS_FILE "img/background_loss.png"
-#define BACKGROUND_WIN_FILE "img/background_win.png"
-#define BACKGROUND_FILE "img/background.gif"
-#define BLOCO_FILE "img/block.png"
-#define PACMAN_FILE "img/pacman.bmp"
-#define MAZE_FILE "data/maze.txt"
 
 #define SCREEN_WIDTH 490
 #define SCREEN_LENGTH 630
@@ -24,11 +8,27 @@ using namespace geom;
 #define MAZE_WALL_LENGHT 15
 #define MOLDURE 30
 
+#include "tela.hpp"
+
+using namespace tela;
+using namespace geom;
+#include <iostream>
+
+#define BACKGROUND_LOSS_FILE "img/background_loss.png"
+#define BACKGROUND_WIN_FILE "img/background_win.png"
+#define BACKGROUND_FILE "img/background.gif"
+#define BLOCO_FILE "img/block.png"
+#define PACMAN_FILE "img/pacman.bmp"
+#define MAZE_FILE "data/maze.txt"
+
 enum State
 {
+    menu,
     nothing,
+    score,
+    playing,
     end,
-    pause_s
+    pause_state
 };
 
 enum BlockTypes
@@ -52,6 +52,7 @@ struct Player
     Cor color;
     int key; // Last key pressed by the user
     int option;
+    time_t time;
 };
 
 struct Pacman
@@ -65,3 +66,8 @@ struct Ghost
     Ponto pos;
     Cor color;
 };
+
+#include "physics.hpp"
+#include "ai.hpp"
+#include "geom.hpp"
+#include "draw.hpp"
