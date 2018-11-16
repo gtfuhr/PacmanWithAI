@@ -12,6 +12,7 @@ struct Draw
   void draw_main_menu(Player *player);
   void draw_map(Block maze[][MAZE_SIDE_WIDTH]);
   void draw_score(void);
+  void draw_scoreboard(void);
   void draw_end(void);
   void draw_help(void);
   void load_background(void);
@@ -23,6 +24,7 @@ private:
   void draw_wall(int i, int j);
   void draw_point(int i, int j, bool bonus);
   void draw_option_switch(int option);
+  void main_menu_text_efect(Ponto local);
 
   const char *options[3] = {"PLAY",
                             "SCORE",

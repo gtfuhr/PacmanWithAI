@@ -56,7 +56,7 @@ struct Player
     State state;
     Cor color;
     int key; // Last key pressed by the user
-    int option;
+    int option, score;
     time_t time;
 };
 

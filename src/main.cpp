@@ -99,9 +99,10 @@ struct Game
             draw.draw_figures(player, ghosts);
             phy.move_pacman(&player);
             phy.move_ghosts(&ghosts);
+            draw.draw_score();
         }
         else if (player.state == State::score)
-            draw.draw_score();
+            draw.draw_scoreboard();
 
         // Updates the screen
         draw.t.mostra();

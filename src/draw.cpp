@@ -159,18 +159,36 @@ void Draw::draw_option_switch(int option)
 {
     for (auto i = 0; i < 3; i++)
     {
+        float mult = i * 50;
         if ((i + 1) == option)
+        {
+            main_menu_text_efect({SCREEN_WIDTH / 2, 275 + mult});
             t.cor({220, 0, 0});
+        }
         else
             t.cor({255, 255, 0});
-
-        float mult = i * 50;
 
         t.texto2({SCREEN_WIDTH / 2, 275 + mult}, options[i]);
     }
 }
 
-void Draw::draw_score(void) {}
+void Draw::main_menu_text_efect(Ponto local)
+{
+    time_t timer;
+    time(&timer);
+    float variancia = (sin(timer) + 2) * 20;
+    float cx = local.x, cy = local.y + 15;
+    al_draw_filled_ellipse(cx - 5, cy, 39 + variancia, 9, {0, 0, 255});
+    al_draw_ellipse(cx - 5, cy, 40 + variancia, 10, {0, 255, 0}, 1);
+}
+
+void Draw::draw_scoreboard(void)
+{
+}
+
+void Draw::draw_score(void)
+{
+}
 
 void Draw::draw_help(void)
 {
