@@ -6,7 +6,10 @@ void Physics::verify_colision(void)
 {
 }
 
-void Physics::move_figures(void)
+void Physics::move_ghosts(std::list<Ghost> *ghosts)
+{
+}
+void Physics::move_pacman(Player *pacman)
 {
 }
 }; // namespace physics

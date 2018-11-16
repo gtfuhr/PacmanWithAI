@@ -7,12 +7,15 @@
 #define MAZE_WALL_WIDTH 15
 #define MAZE_WALL_LENGHT 15
 #define MOLDURE 30
+#define MAX_NUM_OF_BONUS 8
 
 #include "tela.hpp"
 
 using namespace tela;
 using namespace geom;
 #include <iostream>
+#include <list>
+#include <map>
 
 #define BACKGROUND_LOSS_FILE "img/background_loss.png"
 #define BACKGROUND_WIN_FILE "img/background_win.png"
@@ -33,16 +36,18 @@ enum State
 
 enum BlockTypes
 {
-    vertical,
-    horizontal,
+    path,
     crossing,
     wall,
-    spawn,
+    pacman_spawn,
+    ghost_spawn
 };
 
 struct Block
 {
     BlockTypes type;
+    bool hasPoint;
+    bool hasBonus;
 };
 
 struct Player

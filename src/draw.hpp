@@ -8,7 +8,7 @@ struct Draw
 {
   tela::Tela t; // Structure that controls the screen
   void draw_background(void);
-  void draw_figures(void);
+  void draw_figures(Player player, std::list<Ghost> ghosts);
   void draw_main_menu(Player *player);
   void draw_map(Block maze[][MAZE_SIDE_WIDTH]);
   void draw_score(void);
@@ -18,13 +18,16 @@ struct Draw
   void finish(void);
 
 private:
-  void draw_pacman(void);
-  void draw_ghosts(void);
-  void draw_points(void);
+  void draw_pacman(Player pacPlayer);
+  void draw_ghosts(std::list<Ghost> ghosts);
+  void draw_wall(int i, int j);
+  void draw_point(int i, int j, bool bonus);
   void draw_option_switch(int option);
+
   const char *options[3] = {"PLAY",
                             "SCORE",
                             "QUIT"};
+
   ALLEGRO_BITMAP *background, *bloco,
       *loss, *win;
 };

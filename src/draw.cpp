@@ -1,5 +1,10 @@
 #include "draw.hpp"
 
+const Cor ghosts_colors[4] = {{255, 0, 0},     //RED
+                              {73, 0, 255},    //BLUE
+                              {255, 113, 206}, //PINKY
+                              {0, 255, 249}};  //INKY
+
 namespace draw
 {
 void Draw::draw_background(void)
@@ -9,38 +14,84 @@ void Draw::draw_background(void)
 }
 
 // Draw all the figures on the screen
-void Draw::draw_figures()
+void Draw::draw_figures(Player player, std::list<Ghost> ghosts)
 {
-    draw_pacman();
-    draw_ghosts();
+    draw_pacman(player);
+    draw_ghosts(ghosts);
 }
 
-void Draw::draw_pacman(void) {}
-void Draw::draw_ghosts(void) {}
+void Draw::draw_pacman(Player pacPlayer)
+{
+    Circulo pacman;
+    Cor amarelo = {255, 0, 255};
+    t.cor(amarelo);
+    pacman.centro = {(float)pacPlayer.pos.x * MAZE_WALL_WIDTH + MOLDURE + (MAZE_WALL_WIDTH / 2), (float)pacPlayer.pos.y * MAZE_WALL_LENGHT + MOLDURE + (MAZE_WALL_LENGHT / 2)};
+    pacman.raio = 6;
+    t.circulo(pacman);
+}
+
+void Draw::draw_ghosts(std::list<Ghost> ghosts)
+{
+    int i_color = 0;
+    for (auto it = ghosts.begin(); it != ghosts.end(); it++, i_color++)
+    {
+        Circulo ghost;
+        ghost.centro = {(float)it->pos.x * MAZE_WALL_WIDTH + MOLDURE + (MAZE_WALL_WIDTH / 2), (float)it->pos.y * MAZE_WALL_LENGHT + MOLDURE + (MAZE_WALL_LENGHT / 2)};
+        t.cor(ghosts_colors[i_color]);
+        ghost.raio = 6;
+        t.circulo(ghost);
+    }
+}
 
 void Draw::draw_map(Block maze[][MAZE_SIDE_WIDTH])
 {
-    Retangulo wall;
-    wall.tam = {MAZE_WALL_WIDTH, MAZE_WALL_WIDTH};
     for (int i = 0; i < MAZE_SIDE_LENGHT; i++)
         for (int j = 0; j < MAZE_SIDE_WIDTH; j++)
+        {
             switch (maze[i][j].type)
             {
             case BlockTypes::wall:
-                wall.pos = {(float)j * MAZE_WALL_WIDTH + MOLDURE, (float)i * MAZE_WALL_LENGHT + MOLDURE};
-                t.retangulo(wall);
+                draw_wall(i, j);
                 break;
-            case BlockTypes::spawn:
+
+            case BlockTypes::path:
+                draw_point(i, j, false);
                 break;
-            case BlockTypes::horizontal || BlockTypes::vertical || BlockTypes::crossing:
-                draw_points();
+
+            case BlockTypes::crossing:
+                if (maze[i][j].hasBonus == true)
+                    draw_point(i, j, true);
                 break;
             default:
                 break;
             }
+        }
 }
 
-void Draw::draw_points(void) {}
+void Draw::draw_wall(int i, int j)
+{
+    Retangulo wall;
+    wall.tam = {MAZE_WALL_WIDTH, MAZE_WALL_WIDTH};
+    Cor cor_parede = {0, 0, 10};
+    t.cor(cor_parede);
+    wall.pos = {(float)j * MAZE_WALL_WIDTH + MOLDURE, (float)i * MAZE_WALL_LENGHT + MOLDURE};
+    t.retangulo(wall);
+    // wall.pos = {(float)j * MAZE_WALL_WIDTH + MOLDURE + MAZE_WALL_LENGHT / 4, (float)i * MAZE_WALL_LENGHT + MOLDURE + MAZE_WALL_LENGHT / 4};
+    // Cor cor_parede2 = {0, 5, 15};
+    // t.cor(cor_parede2);
+    // wall.tam = {MAZE_WALL_WIDTH / 2, MAZE_WALL_WIDTH / 2};
+    // t.retangulo(wall);
+}
+
+void Draw::draw_point(int i, int j, bool bonus)
+{
+    Circulo ponto;
+    Cor preto = {255, 255, 0};
+    t.cor(preto);
+    ponto.centro = {(float)j * MAZE_WALL_WIDTH + MOLDURE + (MAZE_WALL_WIDTH / 2), (float)i * MAZE_WALL_LENGHT + MOLDURE + (MAZE_WALL_LENGHT / 2)};
+    (bonus) ? ponto.raio = MAZE_WALL_WIDTH / 3.5 : ponto.raio = MAZE_WALL_WIDTH / 7.5;
+    t.circulo(ponto);
+}
 
 void Draw::draw_main_menu(Player *player)
 {
