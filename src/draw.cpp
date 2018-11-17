@@ -77,7 +77,7 @@ void Draw::draw_wall(int i, int j)
     wall.pos = {(float)j * MAZE_WALL_WIDTH + MOLDURE, (float)i * MAZE_WALL_LENGHT + MOLDURE};
     t.retangulo(wall);
     // wall.pos = {(float)j * MAZE_WALL_WIDTH + MOLDURE + MAZE_WALL_LENGHT / 4, (float)i * MAZE_WALL_LENGHT + MOLDURE + MAZE_WALL_LENGHT / 4};
-    // Cor cor_parede2 = {0, 5, 15};
+    // Cor cor_parede2 = {10, 0, 0};
     // t.cor(cor_parede2);
     // wall.tam = {MAZE_WALL_WIDTH / 2, MAZE_WALL_WIDTH / 2};
     // t.retangulo(wall);
@@ -93,19 +93,27 @@ void Draw::draw_point(int i, int j, bool bonus)
     t.circulo(ponto);
 }
 
+int get_ms()
+{
+    using namespace std::chrono;
+    milliseconds ms = duration_cast<milliseconds>(
+        system_clock::now().time_since_epoch());
+    return ms.count();
+}
+
 void Draw::draw_main_menu(Player *player)
 {
     t.cor({0, 0, 255});
     t.texto({SCREEN_WIDTH / 2, 125}, "PAC  MAN");
     t.image_menu({SCREEN_WIDTH / 2 - 50, 80});
+
     if (player->option == 0)
     {
-        if (sin(time(&player->time)) > -0.5)
+        if (sin(get_ms() / 75) > -0.5)
         {
             t.cor({220, 0, 0});
             t.texto2({SCREEN_WIDTH / 2, 345}, "PRESS 'ENTER'");
         }
-
         if (player->key == ALLEGRO_KEY_ENTER)
         {
             t.play_menuSelect();
@@ -174,12 +182,10 @@ void Draw::draw_option_switch(int option)
 
 void Draw::main_menu_text_efect(Ponto local)
 {
-    time_t timer;
-    time(&timer);
-    float variancia = (sin(timer) + 2) * 20;
+    float variancia = sin(get_ms() / 50) * 30;
     float cx = local.x, cy = local.y + 15;
     al_draw_filled_ellipse(cx - 5, cy, 39 + variancia, 9, {0, 0, 255});
-    al_draw_ellipse(cx - 5, cy, 40 + variancia, 10, {0, 255, 0}, 1);
+    al_draw_filled_ellipse(cx - 5, cy + variancia / 3, 40 + variancia, 10, {0, 255, 0});
 }
 
 void Draw::draw_scoreboard(void)
