@@ -318,6 +318,18 @@ void Tela::texto2(Ponto p, const char *s)
     al_draw_text(fonte2, ac_cor, XU2X(p.x), YU2X(p.y), ALLEGRO_ALIGN_CENTRE, s);
 }
 
+void Tela::texto_score_nome(Ponto p, const char *s)
+{
+    /* escreve o texto s na posicao p da tela */
+    al_draw_text(fonte2, ac_cor, XU2X(p.x), YU2X(p.y), ALLEGRO_ALIGN_LEFT, s);
+}
+
+void Tela::texto_score_ponto(Ponto p, const char *s)
+{
+    /* escreve o texto s na posicao p da tela */
+    al_draw_text(fonte2, ac_cor, XU2X(p.x), YU2X(p.y), ALLEGRO_ALIGN_RIGHT, s);
+}
+
 void Tela::image_menu(Ponto p)
 {
     al_draw_bitmap(pacmanbmp, XU2X(p.x), YU2X(p.y), 0);

@@ -15,7 +15,7 @@ struct Game
     // Init the main structures of the game
     void init(void)
     {
-        draw.t.inicia(SCREEN_WIDTH, SCREEN_LENGTH, "PACMAN");
+        draw.t.inicia(SCREEN_WIDTH, SCREEN_LENGTH, "PAC MAN");
         draw.t.play_menuMusic();
         draw.load_background();
         load_maze();
@@ -93,7 +93,7 @@ struct Game
         if (player.state == State::menu)
             draw.draw_main_menu(&player);
 
-        if (player.state == State::playing)
+        else if (player.state == State::playing)
         {
             draw.draw_map(maze);
             draw.draw_figures(player, ghosts);
@@ -102,12 +102,12 @@ struct Game
             draw.draw_score();
         }
         else if (player.state == State::score)
-            draw.draw_scoreboard();
+            draw.draw_scoreboard(&player);
 
         // Updates the screen
         draw.t.mostra();
         draw.draw_background();
-        draw.t.espera(16.66);
+        draw.t.espera(33.33);
         // Waits 16.66 ms, then updates the screen
     }
 

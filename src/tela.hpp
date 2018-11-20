@@ -95,6 +95,10 @@ struct Tela
     // escreve o texto s a partir da posicao p da tela
     void texto2(Ponto p, const char *s);
 
+    void texto_score_nome(Ponto p, const char *s);
+
+    void texto_score_ponto(Ponto p, const char *s);
+
     void image_menu(Ponto p);
 
     void play_menuMusic(void);

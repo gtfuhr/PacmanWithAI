@@ -1,9 +1,9 @@
 #include "draw.hpp"
 
-const Cor ghosts_colors[4] = {{255, 0, 0},     //RED
-                              {73, 0, 255},    //BLUE
+const Cor ghosts_colors[4] = {{255, 0, 0},     //BLINKY
+                              {73, 0, 255},    //INKY
                               {255, 113, 206}, //PINKY
-                              {0, 255, 249}};  //INKY
+                              {0, 255, 249}};  //CLYDE
 
 namespace draw
 {
@@ -188,12 +188,75 @@ void Draw::main_menu_text_efect(Ponto local)
     al_draw_filled_ellipse(cx - 5, cy + variancia / 3, 40 + variancia, 10, {0, 255, 0});
 }
 
-void Draw::draw_scoreboard(void)
+void Draw::draw_scoreboard(Player * player)
 {
+    t.cor({0, 0, 255});
+    t.texto({SCREEN_WIDTH/2, 40}, "SCORES");
+    
+    std::string * names;
+    std::string aux;
+
+    int * points;
+    int size = 0;
+
+    std::ifstream entrada;
+    entrada.open("data/scores.txt");
+
+    while(std::getline(entrada, aux)){
+        size++;
+    }
+
+    names = new std::string[size];
+    points = new int[size];
+
+    entrada.clear();
+    entrada.seekg(0, std::ios::beg);
+
+    for(auto i = 0; i < size; i++){
+        entrada >> names[i];
+        entrada >> points[i];
+    }
+
+    entrada.close();
+
+    for(auto i = 0; i < size; i++){
+        for(int j = (i + 1); j < size; j++){
+            if(points[j] > points[i]){
+                int a = points[j];
+                points[j] = points[i];
+                points[i] = a;
+
+                aux = names[j];
+                names[j] = names[i];
+                names[i] = aux;
+            }
+        }
+    }
+
+    t.cor({255, 255, 0});
+    
+    for(int i = 0; i < 10; i++){
+        aux = std::to_string(points[i]);
+
+        float mult = i * 40;
+        t.texto_score_nome({60, 120 + mult}, names[i].c_str());
+        t.texto_score_ponto({430, 120 + mult}, aux.c_str());
+    }
+
+    main_menu_text_efect({SCREEN_WIDTH/2, 560});
+    
+    t.cor({220, 0, 0});
+    t.texto2({SCREEN_WIDTH/2, 560}, "BACK");
+
+    if(player->key == ALLEGRO_KEY_ENTER){
+        t.play_menuSelect();
+        player->state = State::menu;
+    }
 }
 
 void Draw::draw_score(void)
 {
+
 }
 
 void Draw::draw_help(void)
