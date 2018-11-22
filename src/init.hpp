@@ -60,6 +60,12 @@ struct Player
     time_t time;
 };
 
+struct Scores
+{
+    std::string * names;
+    int * points;
+};
+
 struct Pacman
 {
     Cor color;

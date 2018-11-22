@@ -188,15 +188,9 @@ void Draw::main_menu_text_efect(Ponto local)
     al_draw_filled_ellipse(cx - 5, cy + variancia / 3, 40 + variancia, 10, {0, 255, 0});
 }
 
-void Draw::draw_scoreboard(Player * player)
+void Draw::scoreboard_bubblesort(Scores * scores)
 {
-    t.cor({0, 0, 255});
-    t.texto({SCREEN_WIDTH/2, 40}, "SCORES");
-    
-    std::string * names;
     std::string aux;
-
-    int * points;
     int size = 0;
 
     std::ifstream entrada;
@@ -206,41 +200,57 @@ void Draw::draw_scoreboard(Player * player)
         size++;
     }
 
-    names = new std::string[size];
-    points = new int[size];
+    scores->names = new std::string[size];
+    scores->points = new int[size];
 
     entrada.clear();
     entrada.seekg(0, std::ios::beg);
 
     for(auto i = 0; i < size; i++){
-        entrada >> names[i];
-        entrada >> points[i];
+        entrada >> scores->names[i];
+        entrada >> scores->points[i];
     }
 
     entrada.close();
 
     for(auto i = 0; i < size; i++){
         for(int j = (i + 1); j < size; j++){
-            if(points[j] > points[i]){
-                int a = points[j];
-                points[j] = points[i];
-                points[i] = a;
+            if(scores->points[j] > scores->points[i]){
+                int a = scores->points[j];
+                scores->points[j] = scores->points[i];
+                scores->points[i] = a;
 
-                aux = names[j];
-                names[j] = names[i];
-                names[i] = aux;
+                aux = scores->names[j];
+                scores->names[j] = scores->names[i];
+                scores->names[i] = aux;
             }
         }
     }
+}
+
+void Draw::draw_scoreboard(Player * player, Scores * scores)
+{
+    t.cor({0, 0, 255});
+    t.texto({SCREEN_WIDTH/2, 30}, "SCORES");
 
     t.cor({255, 255, 0});
     
     for(int i = 0; i < 10; i++){
-        aux = std::to_string(points[i]);
+        int aux_placar = i + 1;
+
+        std::string aux = std::to_string(aux_placar);
+
+        if((i + 1) < 10)
+            aux = '0' + aux;
+        aux += '.';
 
         float mult = i * 40;
-        t.texto_score_nome({60, 120 + mult}, names[i].c_str());
-        t.texto_score_ponto({430, 120 + mult}, aux.c_str());
+
+        t.texto_score_nome({20, 120 + mult}, aux.c_str());
+        t.texto_score_nome({110, 120 + mult}, scores->names[i].c_str());
+
+        aux = std::to_string(scores->points[i]);
+        t.texto_score_ponto({470, 120 + mult}, aux.c_str());
     }
 
     main_menu_text_efect({SCREEN_WIDTH/2, 560});

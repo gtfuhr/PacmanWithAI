@@ -7,17 +7,19 @@
 struct Game
 {
     Player player;
+    Scores scores;
     std::list<Ghost> ghosts;
     draw::Draw draw;
     physics::Physics phy;
     Block maze[MAZE_SIDE_LENGHT][MAZE_SIDE_WIDTH];
 
-    // Init the main structures of the game
+    // Init the main structures of the Game
     void init(void)
     {
-        draw.t.inicia(SCREEN_WIDTH, SCREEN_LENGTH, "PAC MAN");
+        draw.t.inicia(SCREEN_WIDTH, SCREEN_LENGTH, "PAC MAN :v");
         draw.t.play_menuMusic();
         draw.load_background();
+        draw.scoreboard_bubblesort(&scores);
         load_maze();
         init_player();
     }
@@ -102,13 +104,13 @@ struct Game
             draw.draw_score();
         }
         else if (player.state == State::score)
-            draw.draw_scoreboard(&player);
+            draw.draw_scoreboard(&player, &scores);
 
         // Updates the screen
         draw.t.mostra();
         draw.draw_background();
         draw.t.espera(33.33);
-        // Waits 16.66 ms, then updates the screen
+        // Waits 33.33 ms, then updates the screen
     }
 
     // Verify if the game ended

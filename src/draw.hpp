@@ -14,7 +14,8 @@ struct Draw
   void draw_main_menu(Player *player);
   void draw_map(Block maze[][MAZE_SIDE_WIDTH]);
   void draw_score(void);
-  void draw_scoreboard(Player * player);
+  void draw_scoreboard(Player * player, Scores * scores);
+  void scoreboard_bubblesort(Scores * scores);
   void draw_end(void);
   void draw_help(void);
   void load_background(void);
