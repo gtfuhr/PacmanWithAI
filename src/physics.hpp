@@ -4,7 +4,7 @@ namespace physics
 {
 struct Physics
 {
-    void move_ghosts(std::list<Ghost> *ghosts);
+    void move_ghosts_2(std::list<Ghost> *ghosts);
     void verify_colision(void);
     void move_pacman(Player *pacman);
 };

@@ -188,7 +188,7 @@ void Draw::main_menu_text_efect(Ponto local)
     al_draw_filled_ellipse(cx - 5, cy + variancia / 3, 40 + variancia, 10, {0, 255, 0});
 }
 
-void Draw::scoreboard_bubblesort(Scores * scores)
+void Draw::scoreboard_bubblesort(Scores *scores)
 {
     std::string aux;
     int size = 0;
@@ -196,7 +196,8 @@ void Draw::scoreboard_bubblesort(Scores * scores)
     std::ifstream entrada;
     entrada.open("data/scores.txt");
 
-    while(std::getline(entrada, aux)){
+    while (std::getline(entrada, aux))
+    {
         size++;
     }
 
@@ -206,16 +207,20 @@ void Draw::scoreboard_bubblesort(Scores * scores)
     entrada.clear();
     entrada.seekg(0, std::ios::beg);
 
-    for(auto i = 0; i < size; i++){
+    for (auto i = 0; i < size; i++)
+    {
         entrada >> scores->names[i];
         entrada >> scores->points[i];
     }
 
     entrada.close();
 
-    for(auto i = 0; i < size; i++){
-        for(int j = (i + 1); j < size; j++){
-            if(scores->points[j] > scores->points[i]){
+    for (auto i = 0; i < size; i++)
+    {
+        for (int j = (i + 1); j < size; j++)
+        {
+            if (scores->points[j] > scores->points[i])
+            {
                 int a = scores->points[j];
                 scores->points[j] = scores->points[i];
                 scores->points[i] = a;
@@ -228,19 +233,20 @@ void Draw::scoreboard_bubblesort(Scores * scores)
     }
 }
 
-void Draw::draw_scoreboard(Player * player, Scores * scores)
+void Draw::draw_scoreboard(Player *player, Scores *scores)
 {
     t.cor({0, 0, 255});
-    t.texto({SCREEN_WIDTH/2, 30}, "SCORES");
+    t.texto({SCREEN_WIDTH / 2, 30}, "SCORES");
 
     t.cor({255, 255, 0});
-    
-    for(int i = 0; i < 10; i++){
+
+    for (int i = 0; i < 10; i++)
+    {
         int aux_placar = i + 1;
 
         std::string aux = std::to_string(aux_placar);
 
-        if((i + 1) < 10)
+        if ((i + 1) < 10)
             aux = '0' + aux;
         aux += '.';
 
@@ -253,12 +259,13 @@ void Draw::draw_scoreboard(Player * player, Scores * scores)
         t.texto_score_ponto({470, 120 + mult}, aux.c_str());
     }
 
-    main_menu_text_efect({SCREEN_WIDTH/2, 560});
-    
-    t.cor({220, 0, 0});
-    t.texto2({SCREEN_WIDTH/2, 560}, "BACK");
+    main_menu_text_efect({SCREEN_WIDTH / 2, 560});
 
-    if(player->key == ALLEGRO_KEY_ENTER){
+    t.cor({220, 0, 0});
+    t.texto2({SCREEN_WIDTH / 2, 560}, "BACK");
+
+    if (player->key == ALLEGRO_KEY_ENTER)
+    {
         t.play_menuSelect();
         player->state = State::menu;
     }
@@ -266,7 +273,6 @@ void Draw::draw_scoreboard(Player * player, Scores * scores)
 
 void Draw::draw_score(void)
 {
-
 }
 
 void Draw::draw_help(void)

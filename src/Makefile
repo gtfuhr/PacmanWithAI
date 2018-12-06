@@ -6,13 +6,13 @@ LDFLAGS = -lallegro -lallegro_main \
 
 all: main
 
-main.o: main.cpp geom.hpp geom.hpp init.hpp 
+main.o: main.cpp geom.hpp geom.hpp init.hpp ai.hpp
 tela.o: tela.cpp tela.hpp geom.hpp 
 draw.o: draw.cpp draw.hpp tela.cpp tela.hpp geom.hpp
 physics.o: physics.cpp physics.hpp
 ai.o: ai.cpp ai.hpp
 
-main: main.o tela.o draw.o physics.o
+main: main.o tela.o draw.o physics.o ai.o
 	$(CXX) $(CXXFLAGS) -o $@  $^ $(LDFLAGS)
 
 clean:

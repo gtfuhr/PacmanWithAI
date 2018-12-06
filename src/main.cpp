@@ -12,15 +12,17 @@ struct Game
     draw::Draw draw;
     physics::Physics phy;
     Block maze[MAZE_SIDE_LENGHT][MAZE_SIDE_WIDTH];
+    ai::Ai ai;
 
     // Init the main structures of the Game
     void init(void)
     {
-        draw.t.inicia(SCREEN_WIDTH, SCREEN_LENGTH, "PAC MAN :v");
+        draw.t.inicia(SCREEN_WIDTH, SCREEN_LENGTH, "PAC MAN");
         draw.t.play_menuMusic();
         draw.load_background();
         draw.scoreboard_bubblesort(&scores);
         load_maze();
+        ai.init_vertices(maze);
         init_player();
     }
 
@@ -85,6 +87,11 @@ struct Game
             }
     }
 
+    void move_ghosts(void)
+    {
+        phy.move_ghosts_2(&ghosts);
+    }
+
     // Updates the game
     void update(void)
     {
@@ -100,7 +107,7 @@ struct Game
             draw.draw_map(maze);
             draw.draw_figures(player, ghosts);
             phy.move_pacman(&player);
-            phy.move_ghosts(&ghosts);
+            move_ghosts();
             draw.draw_score();
         }
         else if (player.state == State::score)
