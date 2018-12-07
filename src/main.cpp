@@ -37,6 +37,8 @@ struct Game
     {
         player.state = State::menu;
         player.option = 0;
+        player.move_x = 0;
+        player.move_y = 0;
     }
 
     void load_maze()
@@ -107,6 +109,7 @@ struct Game
             draw.draw_map(maze);
             draw.draw_figures(player, ghosts);
             phy.move_pacman(&player);
+            phy.verify_collision(&player, maze);
             move_ghosts();
             draw.draw_score();
         }
@@ -116,8 +119,7 @@ struct Game
         // Updates the screen
         draw.t.mostra();
         draw.draw_background();
-        draw.t.espera(33.33);
-        // Waits 33.33 ms, then updates the screen
+        draw.t.espera(16.66);
     }
 
     // Verify if the game ended

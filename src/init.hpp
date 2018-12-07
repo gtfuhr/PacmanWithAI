@@ -7,7 +7,7 @@
 #define MAZE_WALL_WIDTH 15
 #define MAZE_WALL_LENGHT 15
 #define MOLDURE 30
-#define MAX_NUM_OF_BONUS 8
+#define MAX_NUM_OF_BONUS 4
 
 #include "tela.hpp"
 
@@ -55,6 +55,7 @@ struct Player
     Ponto pos;
     State state;
     Cor color;
+    float move_x, move_y;
     int key; // Last key pressed by the user
     int option, score;
     time_t time;

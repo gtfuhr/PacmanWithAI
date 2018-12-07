@@ -23,7 +23,7 @@ void Draw::draw_figures(Player player, std::list<Ghost> ghosts)
 void Draw::draw_pacman(Player pacPlayer)
 {
     Circulo pacman;
-    Cor amarelo = {255, 0, 255};
+    Cor amarelo = {255, 255, 0};
     t.cor(amarelo);
     pacman.centro = {(float)pacPlayer.pos.x * MAZE_WALL_WIDTH + MOLDURE + (MAZE_WALL_WIDTH / 2), (float)pacPlayer.pos.y * MAZE_WALL_LENGHT + MOLDURE + (MAZE_WALL_LENGHT / 2)};
     pacman.raio = 6;
@@ -86,8 +86,8 @@ void Draw::draw_wall(int i, int j)
 void Draw::draw_point(int i, int j, bool bonus)
 {
     Circulo ponto;
-    Cor preto = {255, 255, 0};
-    t.cor(preto);
+    Cor amarelo = {255, 255, 0};
+    t.cor(amarelo);
     ponto.centro = {(float)j * MAZE_WALL_WIDTH + MOLDURE + (MAZE_WALL_WIDTH / 2), (float)i * MAZE_WALL_LENGHT + MOLDURE + (MAZE_WALL_LENGHT / 2)};
     (bonus) ? ponto.raio = MAZE_WALL_WIDTH / 3.5 : ponto.raio = MAZE_WALL_WIDTH / 7.5;
     t.circulo(ponto);
@@ -157,7 +157,6 @@ void Draw::draw_main_menu(Player *player)
                 break;
             default:
                 break;
-                ;
             }
         }
     }

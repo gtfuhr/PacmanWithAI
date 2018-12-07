@@ -135,8 +135,9 @@ void Tela::inicia(int larg, int alt, const char *nome)
     menuMusic = al_load_sample("data/menu.ogg");
     menuScroll = al_load_sample("data/menuscroll.wav");
     menuSelect = al_load_sample("data/menuselect.wav");
+    waka = al_load_sample("data/waka.wav");
 
-    al_reserve_samples(3);
+    al_reserve_samples(4);
     // fonte = al_load_font("data/PAC-FONT.ttf", 0, 0);
 
     if (!fonte || !fonte2)
@@ -180,7 +181,7 @@ void Tela::mostra()
 {
 /* Troca os buffers de video, passando o que foi desenhado para tela */
 #define BACKGROUND_FILE "background.png"
-    al_flip_display();
+    //al_flip_display();
 }
 
 /* tempo de espera em microsegundos */
@@ -197,6 +198,7 @@ void Tela::finaliza()
     al_destroy_sample(menuMusic);
     al_destroy_sample(menuScroll);
     al_destroy_sample(menuSelect);
+    al_destroy_sample(waka);
     al_destroy_event_queue(queue);
 }
 
@@ -348,6 +350,11 @@ void Tela::play_menuScroll(void)
 void Tela::play_menuSelect(void)
 {
     al_play_sample(menuSelect, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, 0);
+}
+
+void Tela::play_waka(void)
+{
+    al_play_sample(waka, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_LOOP, 0);
 }
 
 Ponto Tela::rato()
