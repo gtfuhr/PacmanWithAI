@@ -8,6 +8,7 @@
 #define MAZE_WALL_LENGHT 15
 #define MOLDURE 30
 #define MAX_NUM_OF_BONUS 4
+#define PACMAN_RADIUS 7
 
 #include "tela.hpp"
 
@@ -37,10 +38,8 @@ enum State
 enum BlockTypes
 {
     path,
-    crossing,
+    intersection,
     wall,
-    pacman_spawn,
-    ghost_spawn
 };
 
 struct Block
@@ -52,10 +51,11 @@ struct Block
 
 struct Player
 {
-    Ponto pos;
+    Circulo cir;
     State state;
     Cor color;
-    float move_x, move_y;
+    float speed;
+    int move_x, move_y;
     int key; // Last key pressed by the user
     int option, score;
     time_t time;
@@ -63,8 +63,8 @@ struct Player
 
 struct Scores
 {
-    std::string * names;
-    int * points;
+    std::string *names;
+    int *points;
 };
 
 struct Pacman
@@ -77,6 +77,11 @@ struct Ghost
 {
     Ponto pos;
     Cor color;
+};
+
+struct Ponto_Mapa
+{
+    int x, y;
 };
 
 #include "physics.hpp"

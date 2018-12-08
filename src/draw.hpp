@@ -12,10 +12,10 @@ struct Draw
   void draw_background(void);
   void draw_figures(Player player, std::list<Ghost> ghosts);
   void draw_main_menu(Player *player);
-  void draw_map(Block maze[][MAZE_SIDE_WIDTH]);
+  void draw_map(Block maze[][MAZE_SIDE_LENGHT]);
   void draw_score(void);
-  void draw_scoreboard(Player * player, Scores * scores);
-  void scoreboard_bubblesort(Scores * scores);
+  void draw_scoreboard(Player *player, Scores *scores);
+  void scoreboard_bubblesort(Scores *scores);
   void draw_end(void);
   void draw_help(void);
   void load_background(void);

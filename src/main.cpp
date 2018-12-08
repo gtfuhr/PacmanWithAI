@@ -11,7 +11,7 @@ struct Game
     std::list<Ghost> ghosts;
     draw::Draw draw;
     physics::Physics phy;
-    Block maze[MAZE_SIDE_LENGHT][MAZE_SIDE_WIDTH];
+    Block maze[MAZE_SIDE_WIDTH][MAZE_SIDE_LENGHT];
     ai::Ai ai;
 
     // Init the main structures of the Game
@@ -24,12 +24,13 @@ struct Game
         load_maze();
         ai.init_vertices(maze);
         init_player();
+        phy.initPhy();
     }
 
-    void init_ghost(int i, int j)
+    void init_ghost(int x, int y)
     {
         Ghost ghost;
-        ghost.pos = {float(j), float(i)};
+        ghost.pos = {float(x), float(y)};
         ghosts.push_back(ghost);
     }
 
@@ -39,6 +40,8 @@ struct Game
         player.option = 0;
         player.move_x = 0;
         player.move_y = 0;
+        player.speed = 0.6;
+        player.cir.raio = PACMAN_RADIUS;
     }
 
     void load_maze()
@@ -47,43 +50,44 @@ struct Game
         std::string line;
         std::ifstream fileStre{MAZE_FILE};
         for (auto i = 0; std::getline(fileStre, line); i++)
-            for (auto j = 0; line[j] != '\0'; j++)
+            for (auto l = 0; line[l] != '\0'; l++)
             {
-                maze[i][j].hasPoint = false;
-                maze[i][j].hasBonus = false;
-                switch (line[j])
+                maze[l][i].hasPoint = false;
+                maze[l][i].hasBonus = false;
+                switch (line[l])
                 {
                 case '-':
-                    maze[i][j].type = BlockTypes::path;
-                    maze[i][j].hasPoint = true;
+                    maze[l][i].type = BlockTypes::path;
+                    maze[l][i].hasPoint = true;
                     break;
                 case '+':
-                    maze[i][j].type = BlockTypes::crossing;
-                    maze[i][j].hasPoint = true;
-                    maze[i][j].hasBonus = false;
+                    maze[l][i].type = BlockTypes::intersection;
+                    maze[l][i].hasPoint = true;
+                    maze[l][i].hasBonus = false;
                     if (numOfBonus < MAX_NUM_OF_BONUS && sin(rand()) > 0.9)
                     {
-                        maze[i][j].hasBonus = true;
+                        maze[l][i].hasBonus = true;
                         numOfBonus++;
                     }
 
                     break;
                 case '0':
-                    maze[i][j].type = BlockTypes::wall;
+                    maze[l][i].type = BlockTypes::wall;
                     break;
                 case '|':
-                    maze[i][j].type = BlockTypes::path;
-                    maze[i][j].hasPoint = true;
+                    maze[l][i].type = BlockTypes::path;
+                    maze[l][i].hasPoint = true;
                     break;
                 case '*':
-                    maze[i][j].type = BlockTypes::pacman_spawn;
-                    player.pos = {float(j), float(i)};
+                    maze[l][i].type = BlockTypes::intersection;
+                    player.cir.centro = {(float)l * MAZE_WALL_WIDTH + MOLDURE + (MAZE_WALL_WIDTH / 2), (float)i * MAZE_WALL_LENGHT + MOLDURE + (MAZE_WALL_LENGHT / 2)};
                     break;
                 case '#':
-                    maze[i][j].type = BlockTypes::ghost_spawn;
-                    init_ghost(i, j);
+                    maze[l][i].type = BlockTypes::path;
+                    init_ghost(l, i);
                     break;
                 case ' ':
+                    maze[l][i].type = BlockTypes::path;
                     break;
                 }
             }

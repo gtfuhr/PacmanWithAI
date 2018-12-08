@@ -17,14 +17,14 @@ void Ai::init_vertex(int x, int y)
     grafo[vertice] = Vertice();
     grafo[vertice].dist = 0;
 }
-void Ai::init_vertices(Block maze[][MAZE_SIDE_WIDTH])
+void Ai::init_vertices(Block maze[][MAZE_SIDE_LENGHT])
 {
     for (int y = 0; y < MAZE_SIDE_LENGHT; y++)
         for (int x = 0; x < MAZE_SIDE_WIDTH; x++)
         {
-            if (maze[y][x].type == BlockTypes::path)
+            if (maze[x][y].type == BlockTypes::path)
                 init_vertex(x, y);
-            else if (maze[y][x].type == BlockTypes::crossing)
+            else if (maze[x][y].type == BlockTypes::intersection)
                 init_vertex(x, y);
         }
     init_arestas(maze);
@@ -61,11 +61,11 @@ void Ai::check_arestas(int x, int y)
     if (it_esquerda != it_end)
         init_aresta(centro, esquerda);
 }
-void Ai::init_arestas(Block maze[][MAZE_SIDE_WIDTH])
+void Ai::init_arestas(Block maze[][MAZE_SIDE_LENGHT])
 {
     Ponto_Mapa atual;
-    for (int y = 0; y < MAZE_SIDE_LENGHT; y++)
-        for (int x = 0; x < MAZE_SIDE_WIDTH; x++)
+    for (int y = 0; y < MAZE_SIDE_WIDTH; y++)
+        for (int x = 0; x < MAZE_SIDE_LENGHT; x++)
         {
             atual = {x, y};
             auto it = grafo.find(atual);
