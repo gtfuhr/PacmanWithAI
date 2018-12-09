@@ -16,7 +16,8 @@ struct Draw
   void draw_score(int score);
   void draw_scoreboard(Player *player, Scores *scores);
   void scoreboard_bubblesort(Scores *scores);
-  void draw_end(void);
+  void draw_end();
+  void draw_win(int score);
   void draw_help(void);
   void load_background(void);
   void finish(void);

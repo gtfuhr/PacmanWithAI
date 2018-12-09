@@ -180,11 +180,25 @@ int Physics::pacman_score(Player *pacman, Block maze[][MAZE_SIDE_LENGHT], int sc
 	}
 
 	if(maze[localPac.x][localPac.y].hasBonus == true){
-		score += 100;
+		score += 40;
 		maze[localPac.x][localPac.y].hasBonus = false;
 	}
 
 	return score;
+}
+
+void Physics::win_condition(Player * player, Block maze[][MAZE_SIDE_LENGHT])
+{
+	for(int i = 0; i < MAZE_SIDE_WIDTH; i++){
+		for(int j = 0; j < MAZE_SIDE_LENGHT; j++){
+			if(maze[i][j].type != BlockTypes::wall){
+				if(maze[i][j].hasPoint == true){
+					return;
+				}
+			}
+		}
+	}
+	player->state = State::win;
 }
 
 void Physics::move_ghosts_2(std::list<Ghost> *ghosts)

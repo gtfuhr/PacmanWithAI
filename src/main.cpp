@@ -71,6 +71,7 @@ struct Game
                     maze[l][i].hasBonus = false;
                     if (numOfBonus < MAX_NUM_OF_BONUS && sin(rand()) > 0.9)
                     {
+                        maze[l][i].hasPoint = false;
                         maze[l][i].hasBonus = true;
                         numOfBonus++;
                     }
@@ -121,9 +122,13 @@ struct Game
             move_ghosts();
             score = phy.pacman_score(&player, maze, score);
             draw.draw_score(score);
+            phy.win_condition(&player, maze);
         }
         else if (player.state == State::score)
             draw.draw_scoreboard(&player, &scores);
+        else if (player.state == State::win){
+            draw.draw_win(score);
+        }
 
         // Updates the screen
         draw.t.mostra();

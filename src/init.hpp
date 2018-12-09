@@ -7,7 +7,7 @@
 #define MAZE_WALL_WIDTH 15
 #define MAZE_WALL_LENGHT 15
 #define MOLDURE 30
-#define MAX_NUM_OF_BONUS 4
+#define MAX_NUM_OF_BONUS 12
 #define PACMAN_RADIUS 7
 
 #include "tela.hpp"
@@ -31,6 +31,7 @@ enum State
     nothing,
     score,
     playing,
+    win,
     end,
     pause_state
 };

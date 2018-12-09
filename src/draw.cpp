@@ -60,6 +60,8 @@ void Draw::draw_map(Block maze[][MAZE_SIDE_LENGHT])
             case BlockTypes::intersection:
                 if (maze[x][y].hasBonus == true)
                     draw_point(x, y, true);
+                else if (maze[x][y].hasPoint == true)
+                    draw_point(x, y, false);
                 break;
             default:
                 break;
@@ -271,6 +273,16 @@ void Draw::draw_score(int score)
     std::string string_score = std::to_string(score);
     txt += string_score;
     t.texto3({SCREEN_WIDTH/2, 5}, txt.c_str());
+}
+
+void Draw::draw_win(int score){
+    std::string txt = "SCORE: ";
+    std::string string_score = std::to_string(score);
+    txt += string_score;
+
+    t.cor({255, 255, 0});
+    t.texto({SCREEN_WIDTH / 2, 30}, "YOU WIN");
+    t.texto2({SCREEN_WIDTH / 2, (SCREEN_LENGTH / 2) - 30}, txt.c_str());
 }
 
 void Draw::draw_help(void)
