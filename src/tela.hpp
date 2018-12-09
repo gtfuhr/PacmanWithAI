@@ -65,6 +65,7 @@ struct Tela
     ALLEGRO_SAMPLE *menuMusic;
     ALLEGRO_SAMPLE *menuScroll;
     ALLEGRO_SAMPLE *menuSelect;
+    ALLEGRO_SAMPLE *wakasfx;
     /* ALLEGRO_TIMER *timer;  // timer */
     Retangulo janela; // retangulo que contem nossa janela
     Tamanho tam;      // tamanho da janela
@@ -109,6 +110,8 @@ struct Tela
     void play_menuScroll(void);
 
     void play_menuSelect(void);
+
+    void play_wakasfx(void);
 
     // retorna o codigo da proxima tecla apertada (ou 0, se nao tiver tecla
     // alguma)

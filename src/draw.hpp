@@ -10,6 +10,7 @@ struct Draw
 {
   tela::Tela t; // Structure that controls the screen
   void draw_background(void);
+  void imprime_centralizado(std::string str);
   void draw_figures(Player player, std::list<Ghost> ghosts);
   void draw_main_menu(Player *player);
   void draw_map(Block maze[][MAZE_SIDE_LENGHT]);
@@ -17,7 +18,7 @@ struct Draw
   void draw_scoreboard(Player *player, Scores *scores);
   void scoreboard_bubblesort(Scores *scores);
   void draw_end();
-  void draw_win(int score);
+  void draw_win(Player *player, int score, std::string str);
   void draw_help(void);
   void load_background(void);
   void finish(void);

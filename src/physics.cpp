@@ -193,6 +193,7 @@ void Physics::win_condition(Player * player, Block maze[][MAZE_SIDE_LENGHT])
 		for(int j = 0; j < MAZE_SIDE_LENGHT; j++){
 			if(maze[i][j].type != BlockTypes::wall){
 				if(maze[i][j].hasPoint == true){
+					player->state = State::win;
 					return;
 				}
 			}

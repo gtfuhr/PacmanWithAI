@@ -136,6 +136,7 @@ void Tela::inicia(int larg, int alt, const char *nome)
     menuMusic = al_load_sample("data/menu.ogg");
     menuScroll = al_load_sample("data/menuscroll.wav");
     menuSelect = al_load_sample("data/menuselect.wav");
+    wakasfx = al_load_sample("data/pacman_chomp.wav");
 
     al_reserve_samples(4);
     // fonte = al_load_font("data/PAC-FONT.ttf", 0, 0);
@@ -355,6 +356,11 @@ void Tela::play_menuScroll(void)
 void Tela::play_menuSelect(void)
 {
     al_play_sample(menuSelect, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, 0);
+}
+
+void Tela::play_wakasfx(void)
+{
+    al_play_sample(wakasfx, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, 0);
 }
 
 Ponto Tela::rato()

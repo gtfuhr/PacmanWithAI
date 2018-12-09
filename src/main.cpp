@@ -16,6 +16,7 @@ struct Game
     Block maze[MAZE_SIDE_WIDTH][MAZE_SIDE_LENGHT];
     ai::Ai ai;
     int score;
+    std::string str;
 
     // Init the main structures of the Game
     void init(void)
@@ -109,6 +110,8 @@ struct Game
     {
         // Read last key
         player.key = draw.t.tecla();
+        if(player.key != 0)
+            std::cout << player.key << std::endl;
         draw.t.limpa();
         // The 'Q' key ends the game
         if (player.state == State::menu)
@@ -116,24 +119,28 @@ struct Game
 
         else if (player.state == State::playing)
         {
+            int score_ant = score;
             draw.draw_map(maze);
             draw.draw_figures(player, ghosts);
             phy.verify_collision(&player, ai.grafo, maze);
             move_ghosts();
             score = phy.pacman_score(&player, maze, score);
+            if(score_ant == score){
+                draw.t.play_wakasfx();
+            }
             draw.draw_score(score);
             phy.win_condition(&player, maze);
         }
         else if (player.state == State::score)
             draw.draw_scoreboard(&player, &scores);
         else if (player.state == State::win){
-            draw.draw_win(score);
+            draw.draw_win(&player, score, str);
         }
 
         // Updates the screen
         draw.t.mostra();
         draw.draw_background();
-        draw.t.espera(8.33);
+        draw.t.espera(16.66);
     }
 
     // Verify if the game ended

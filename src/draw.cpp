@@ -275,7 +275,48 @@ void Draw::draw_score(int score)
     t.texto3({SCREEN_WIDTH/2, 5}, txt.c_str());
 }
 
-void Draw::draw_win(int score){
+void entrada_txt(Player *player, std::string str){
+    if (player->key != 0)
+    {
+        if (str.length() <= 7)
+        {
+            std::string aux;
+            //char temp[] = {evento.keyboard.unichar, '\0'};
+            if (player->key >= 1 && player->key <= 26)
+            {   
+                aux = 'A' + player->key - 1;
+                str += aux;
+            }
+            else if (player->key >= 27 &&
+                     player->key <= 36)
+            {
+                aux = '0' + player->key - 1;
+                str += aux;
+            }
+            else if (player->key == 75)
+            {
+                str += ' ';
+            }
+
+            //std::cout << aux << std::endl;
+            std::cout << str << std::endl;
+        }
+ 
+        if (player->key == 63 && str.length() != 0)
+        {
+            str[str.length() - 1] = '\0';
+        }
+    }
+}
+
+void Draw::imprime_centralizado(std::string str){
+    if (str.length() > 0)
+    {
+        t.texto2({SCREEN_WIDTH / 2, SCREEN_LENGTH / 2}, str.c_str());
+    }
+}
+
+void Draw::draw_win(Player *player, int score, std::string str){
     std::string txt = "SCORE: ";
     std::string string_score = std::to_string(score);
     txt += string_score;
@@ -283,12 +324,15 @@ void Draw::draw_win(int score){
     t.cor({255, 255, 0});
     t.texto({SCREEN_WIDTH / 2, 30}, "YOU WIN");
     t.texto2({SCREEN_WIDTH / 2, (SCREEN_LENGTH / 2) - 30}, txt.c_str());
+    
+    entrada_txt(player, str);
+    imprime_centralizado(str);
 }
 
 void Draw::draw_help(void)
 {
     std::cout << "Pressione: " << std::endl;
-    std::cout << " - 'a' ,'s' 'w' e 'd' para mover " << std::endl;
+    std::cout << " - '^' ,'<' 'v' e '>' para mover " << std::endl;
     std::cout << " - 'esc' sair" << std::endl;
 }
 
