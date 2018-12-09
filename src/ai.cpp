@@ -2,20 +2,26 @@
 #include <list>
 #include <map>
 #include <queue>
-
 //Ja que o Ponto_mapa é usado como uma chave do Map, ele precisa ter uma forma de comparacao
-bool operator<(const Ponto_Mapa &a, const Ponto_Mapa &b)
+inline bool operator<(const Ponto_Mapa &a, const Ponto_Mapa &b)
 {
     return std::tie(a.x, a.y) < std::tie(b.x, b.y);
 }
-
 namespace ai
 {
+
+void Ai::initContainsPacman(int x, int y)
+{
+    Ponto_Mapa localPacman = {x, y};
+    grafo[localPacman].containsPacman = true;
+}
+
 void Ai::init_vertex(int x, int y)
 {
     Ponto_Mapa vertice = {x, y};
     grafo[vertice] = Vertice();
     grafo[vertice].dist = 0;
+    grafo[vertice].chave = vertice;
 }
 void Ai::init_vertices(Block maze[][MAZE_SIDE_LENGHT])
 {
@@ -64,8 +70,8 @@ void Ai::check_arestas(int x, int y)
 void Ai::init_arestas(Block maze[][MAZE_SIDE_LENGHT])
 {
     Ponto_Mapa atual;
-    for (int y = 0; y < MAZE_SIDE_WIDTH; y++)
-        for (int x = 0; x < MAZE_SIDE_LENGHT; x++)
+    for (int y = 0; y < MAZE_SIDE_LENGHT; y++)
+        for (int x = 0; x < MAZE_SIDE_WIDTH; x++)
         {
             atual = {x, y};
             auto it = grafo.find(atual);

@@ -4,6 +4,8 @@
 #include "init.hpp"
 #include <fstream>
 
+// bool operator<(const Ponto_Mapa &a, const Ponto_Mapa &b)
+
 struct Game
 {
     Player player;
@@ -23,8 +25,9 @@ struct Game
         draw.scoreboard_bubblesort(&scores);
         load_maze();
         ai.init_vertices(maze);
+        ai.initContainsPacman(14, 20);
         init_player();
-        phy.initPhy();
+        phy.initPhy(14, 20);
     }
 
     void init_ghost(int x, int y)
@@ -40,7 +43,7 @@ struct Game
         player.option = 0;
         player.move_x = 0;
         player.move_y = 0;
-        player.speed = 0.6;
+        player.speed = 3;
         player.cir.raio = PACMAN_RADIUS;
     }
 
@@ -79,7 +82,7 @@ struct Game
                     maze[l][i].hasPoint = true;
                     break;
                 case '*':
-                    maze[l][i].type = BlockTypes::intersection;
+                    maze[l][i].type = BlockTypes::path;
                     player.cir.centro = {(float)l * MAZE_WALL_WIDTH + MOLDURE + (MAZE_WALL_WIDTH / 2), (float)i * MAZE_WALL_LENGHT + MOLDURE + (MAZE_WALL_LENGHT / 2)};
                     break;
                 case '#':
@@ -112,8 +115,7 @@ struct Game
         {
             draw.draw_map(maze);
             draw.draw_figures(player, ghosts);
-            phy.move_pacman(&player);
-            phy.verify_collision(&player, maze);
+            phy.verify_collision(&player, ai.grafo, maze);
             move_ghosts();
             draw.draw_score();
         }

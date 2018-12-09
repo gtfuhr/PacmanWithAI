@@ -4,14 +4,15 @@ namespace physics
 {
 struct Physics
 {
-    void move_ghosts_2(std::list<Ghost> *ghosts);
-    void verify_collision(Player *pacman, Block maze[MAZE_SIDE_WIDTH][MAZE_SIDE_LENGHT]);
-    void move_pacman(Player *pacman);
-    void initPhy(void);
+  void move_ghosts_2(std::list<Ghost> *ghosts);
+  void verify_collision(Player *pacman, std::map<Ponto_Mapa, Vertice> grafo, Block maze[][MAZE_SIDE_LENGHT]);
+  void move_pacman(Player *pacman);
+  void initPhy(int x, int y);
 
-  private:
-    int PacmanMudouCol(int x, int y);
-    int number_of_rows;
-    Ponto_Mapa bloco_antigo;
+private:
+  int pacmanMudouDeNo(Player *pacman);
+  int number_of_rows;
+  Ponto_Mapa localPac, bloco_antigo;
+  bool moving;
 };
 }; // namespace physics

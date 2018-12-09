@@ -42,6 +42,13 @@ enum BlockTypes
     wall,
 };
 
+enum cor_grafo
+{
+    BRANCO,
+    CINZA,
+    PRETO
+};
+
 struct Block
 {
     BlockTypes type;
@@ -82,6 +89,15 @@ struct Ghost
 struct Ponto_Mapa
 {
     int x, y;
+};
+struct Vertice
+{
+    int dist;
+    Vertice *ant;
+    Ponto_Mapa chave;
+    bool containsPacman;
+    cor_grafo cor;
+    std::list<Vertice> arestas;
 };
 
 #include "physics.hpp"
