@@ -1,3 +1,4 @@
+#include <string>
 #include "draw.hpp"
 
 const Cor ghosts_colors[4] = {{255, 0, 0},     //BLINKY
@@ -52,7 +53,8 @@ void Draw::draw_map(Block maze[][MAZE_SIDE_LENGHT])
                 break;
 
             case BlockTypes::path:
-                draw_point(x, y, false);
+                if(maze[x][y].hasPoint == true)
+                    draw_point(x, y, false);
                 break;
 
             case BlockTypes::intersection:
@@ -262,8 +264,13 @@ void Draw::draw_scoreboard(Player *player, Scores *scores)
     }
 }
 
-void Draw::draw_score(void)
-{
+void Draw::draw_score(int score)
+{   
+    t.cor({255, 255, 0});
+    std::string txt = "SCORE: ";
+    std::string string_score = std::to_string(score);
+    txt += string_score;
+    t.texto3({SCREEN_WIDTH/2, 5}, txt.c_str());
 }
 
 void Draw::draw_help(void)

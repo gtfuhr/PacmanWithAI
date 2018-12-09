@@ -40,6 +40,7 @@ enum BlockTypes
     path,
     intersection,
     wall,
+    portal,
 };
 
 enum cor_grafo

@@ -131,16 +131,16 @@ void Tela::inicia(int larg, int alt, const char *nome)
 
     fonte = al_load_ttf_font("data/PAC-BIT.ttf", 56, 0);
     fonte2 = al_load_ttf_font("data/PAC-BIT.ttf", 32, 0);
+    fonte3 = al_load_ttf_font("data/PAC-BIT.ttf", 20, 0);
 
     menuMusic = al_load_sample("data/menu.ogg");
     menuScroll = al_load_sample("data/menuscroll.wav");
     menuSelect = al_load_sample("data/menuselect.wav");
-    waka = al_load_sample("data/waka.wav");
 
     al_reserve_samples(4);
     // fonte = al_load_font("data/PAC-FONT.ttf", 0, 0);
 
-    if (!fonte || !fonte2)
+    if (!fonte || !fonte2 || !fonte3)
     {
         std::cerr << "falha ao carregar fonte do allegro" << std::endl;
         std::abort();
@@ -198,7 +198,6 @@ void Tela::finaliza()
     al_destroy_sample(menuMusic);
     al_destroy_sample(menuScroll);
     al_destroy_sample(menuSelect);
-    al_destroy_sample(waka);
     al_destroy_event_queue(queue);
 }
 
@@ -320,6 +319,12 @@ void Tela::texto2(Ponto p, const char *s)
     al_draw_text(fonte2, ac_cor, XU2X(p.x), YU2X(p.y), ALLEGRO_ALIGN_CENTRE, s);
 }
 
+void Tela::texto3(Ponto p, const char *s)
+{
+    /* escreve o texto s na posicao p da tela */
+    al_draw_text(fonte3, ac_cor, XU2X(p.x), YU2X(p.y), ALLEGRO_ALIGN_CENTRE, s);
+}
+
 void Tela::texto_score_nome(Ponto p, const char *s)
 {
     /* escreve o texto s na posicao p da tela */
@@ -350,11 +355,6 @@ void Tela::play_menuScroll(void)
 void Tela::play_menuSelect(void)
 {
     al_play_sample(menuSelect, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, 0);
-}
-
-void Tela::play_waka(void)
-{
-    al_play_sample(waka, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_LOOP, 0);
 }
 
 Ponto Tela::rato()

@@ -15,10 +15,12 @@ struct Game
     physics::Physics phy;
     Block maze[MAZE_SIDE_WIDTH][MAZE_SIDE_LENGHT];
     ai::Ai ai;
+    int score;
 
     // Init the main structures of the Game
     void init(void)
     {
+        score = 0;
         draw.t.inicia(SCREEN_WIDTH, SCREEN_LENGTH, "PAC MAN");
         draw.t.play_menuMusic();
         draw.load_background();
@@ -117,7 +119,8 @@ struct Game
             draw.draw_figures(player, ghosts);
             phy.verify_collision(&player, ai.grafo, maze);
             move_ghosts();
-            draw.draw_score();
+            score = phy.pacman_score(&player, maze, score);
+            draw.draw_score(score);
         }
         else if (player.state == State::score)
             draw.draw_scoreboard(&player, &scores);
@@ -125,7 +128,7 @@ struct Game
         // Updates the screen
         draw.t.mostra();
         draw.draw_background();
-        draw.t.espera(16.66);
+        draw.t.espera(8.33);
     }
 
     // Verify if the game ended

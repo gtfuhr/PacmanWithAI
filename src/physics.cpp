@@ -172,6 +172,21 @@ void Physics::verify_collision(Player *pacman, std::map<Ponto_Mapa, Vertice> gra
 	}
 }
 
+int Physics::pacman_score(Player *pacman, Block maze[][MAZE_SIDE_LENGHT], int score)
+{
+	if(maze[localPac.x][localPac.y].hasPoint == true){
+		score += 10;
+		maze[localPac.x][localPac.y].hasPoint = false;
+	}
+
+	if(maze[localPac.x][localPac.y].hasBonus == true){
+		score += 100;
+		maze[localPac.x][localPac.y].hasBonus = false;
+	}
+
+	return score;
+}
+
 void Physics::move_ghosts_2(std::list<Ghost> *ghosts)
 {
 }

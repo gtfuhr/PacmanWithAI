@@ -6,6 +6,7 @@ struct Physics
 {
   void move_ghosts_2(std::list<Ghost> *ghosts);
   void verify_collision(Player *pacman, std::map<Ponto_Mapa, Vertice> grafo, Block maze[][MAZE_SIDE_LENGHT]);
+  int pacman_score(Player *pacman, Block maze[][MAZE_SIDE_LENGHT], int score);
   void move_pacman(Player *pacman);
   void initPhy(int x, int y);
 
