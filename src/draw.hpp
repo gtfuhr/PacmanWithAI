@@ -18,13 +18,16 @@ struct Draw
   void draw_scoreboard(Player *player, Scores *scores);
   void scoreboard_bubblesort(Scores *scores);
   void draw_end();
-  void draw_win(Player *player, int score, std::string str);
-  void draw_defeat(Player *player, int score, std::string str);
+  void draw_win(Player *player, int score, std::string *str);
+  void draw_defeat(Player *player, int score, std::string *str);
   void draw_help(void);
   void load_background(void);
   void finish(void);
+  int get_ms();
 
 private:
+  void entrada_txt(Player *player, std::string *str, int score);
+  void salva_no_arquivo(std::string str, int score);
   void draw_pacman(Player pacPlayer);
   void draw_ghosts(std::list<Ghost> ghosts);
   void draw_wall(int i, int j);

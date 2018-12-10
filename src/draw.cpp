@@ -1,10 +1,11 @@
 #include <string>
+#include <fstream>
 #include "draw.hpp"
 
-const Cor ghosts_colors[4] = {{255, 0, 0},         //BLINKY
-                              {255, 157, 0},      //INKY
-                              {249, 162, 244},   //PINKY
-                              {0, 255, 255}};   //CLYDE
+const Cor ghosts_colors[4] = {{255, 0, 0},     //BLINKY
+                              {255, 157, 0},   //INKY
+                              {249, 162, 244}, //PINKY
+                              {0, 255, 255}};  //CLYDE
 
 namespace draw
 {
@@ -35,7 +36,7 @@ void Draw::draw_ghosts(std::list<Ghost> ghosts)
     {
         t.cor(ghosts_colors[i_color]);
         t.circulo(it->cir);
-        t.retangulo({{float(it->cir.centro.x - PACMAN_RADIUS + 0.25), it->cir.centro.y}, {float(PACMAN_RADIUS*2 - 0.25), PACMAN_RADIUS}});
+        t.retangulo({{float(it->cir.centro.x - PACMAN_RADIUS + 0.25), it->cir.centro.y}, {float(PACMAN_RADIUS * 2 - 0.25), PACMAN_RADIUS}});
     }
 }
 
@@ -87,7 +88,7 @@ void Draw::draw_point(int x, int y, bool bonus)
     t.circulo(ponto);
 }
 
-int get_ms()
+int Draw::get_ms()
 {
     using namespace std::chrono;
     milliseconds ms = duration_cast<milliseconds>(
@@ -194,6 +195,7 @@ void Draw::scoreboard_bubblesort(Scores *scores)
         size++;
     }
 
+    scores->size = size;
     scores->names = new std::string[size];
     scores->points = new int[size];
 
@@ -233,13 +235,13 @@ void Draw::draw_scoreboard(Player *player, Scores *scores)
 
     t.cor({255, 255, 0});
 
-    for (int i = 0; i < 10; i++)
+    for (int i = 0; i < scores->size && i < 10; i++)
     {
         int aux_placar = i + 1;
 
         std::string aux = std::to_string(aux_placar);
 
-        if ((i + 1) < 10)
+        if ((i + 1) <= scores->size)
             aux = '0' + aux;
         aux += '.';
 
@@ -273,37 +275,41 @@ void Draw::draw_score(int score)
     t.texto3({SCREEN_WIDTH / 2, 5}, txt.c_str());
 }
 
-void entrada_txt(Player *player, std::string str)
+void Draw::salva_no_arquivo(std::string str, int score)
+{
+    std::ofstream entrada;
+    entrada.open("data/scores.txt", std::ios::app);
+    entrada << '\n'
+            << str << ' ' << score;
+    entrada.close();
+}
+
+void Draw::entrada_txt(Player *player, std::string *str, int score)
 {
     if (player->key != 0)
     {
-        if (str.length() <= 7)
+        if ((*str).length() < 7)
         {
-            std::string aux;
-            //char temp[] = {evento.keyboard.unichar, '\0'};
             if (player->key >= 1 && player->key <= 26)
             {
-                aux = 'A' + player->key - 1;
-                str += aux;
+                char aux = 'A' + player->key - 1;
+                (*str).push_back(aux);
             }
-            else if (player->key >= 27 &&
-                     player->key <= 36)
+            else if (player->key >= 27 && player->key <= 36)
             {
-                aux = '0' + player->key - 1;
-                str += aux;
+                char aux = '0' + player->key - 1;
+                (*str).push_back(aux);
             }
-            else if (player->key == 75)
-            {
-                str += ' ';
-            }
-
-            //std::cout << aux << std::endl;
-            std::cout << str << std::endl;
         }
-
-        if (player->key == 63 && str.length() != 0)
+        if (player->key == ALLEGRO_KEY_BACKSPACE)
         {
-            str[str.length() - 1] = '\0';
+            if ((*str).length() > 0)
+                (*str).pop_back();
+        }
+        if (player->key == ALLEGRO_KEY_ENTER && (*str).length() > 0)
+        {
+            salva_no_arquivo(*str, score);
+            player->state = State::init;
         }
     }
 }
@@ -312,11 +318,12 @@ void Draw::imprime_centralizado(std::string str)
 {
     if (str.length() > 0)
     {
-        t.texto2({SCREEN_WIDTH / 2, (SCREEN_LENGTH / 2) + 30}, str.c_str());
+        t.cor({255, 0, 0});
+        t.texto2({SCREEN_WIDTH / 2, (SCREEN_LENGTH / 2) + 60}, str.c_str());
     }
 }
 
-void Draw::draw_win(Player *player, int score, std::string str)
+void Draw::draw_win(Player *player, int score, std::string *str)
 {
     std::string txt = "SCORE: ";
     std::string string_score = std::to_string(score);
@@ -332,11 +339,11 @@ void Draw::draw_win(Player *player, int score, std::string str)
         t.texto3({SCREEN_WIDTH / 2, (SCREEN_LENGTH / 2) + 120}, "PRESS 'ENTER' WHEN READY");
     }
 
-    /*entrada_txt(player, str);
-    imprime_centralizado(str);*/
+    entrada_txt(player, str, score);
+    imprime_centralizado(*str);
 }
 
-void Draw::draw_defeat(Player *player, int score, std::string str)
+void Draw::draw_defeat(Player *player, int score, std::string *str)
 {
     std::string txt = "SCORE: ";
     std::string string_score = std::to_string(score);
@@ -352,8 +359,8 @@ void Draw::draw_defeat(Player *player, int score, std::string str)
         t.texto3({SCREEN_WIDTH / 2, (SCREEN_LENGTH / 2) + 120}, "PRESS 'ENTER' WHEN READY");
     }
 
-    /*entrada_txt(player, str);
-    imprime_centralizado(str);*/
+    entrada_txt(player, str, score);
+    imprime_centralizado(*str);
 }
 
 void Draw::draw_help(void)
@@ -365,58 +372,13 @@ void Draw::draw_help(void)
 
 void Draw::draw_end()
 {
-    // Cor branco = {255, 255, 255};
-    // Ponto localMensagem = {400, 400};
-    // if (1 + 1)
-    // {
-    //     al_draw_bitmap(loss, 0, 0, 0);
-    //     t.cor(branco);
-    //     t.texto(localMensagem, "You lost the game! D`:");
-    // }
-    // else
-    // {
-    //     al_draw_bitmap(win, 0, 0, 0);
-    //     t.cor(branco);
-    //     t.texto(localMensagem, "You won the game! XD");
-    // }
-    // al_flip_display();
-    // t.espera(5000);
 }
 
 void Draw::load_background()
 {
-    // background = al_load_bitmap(BACKGROUND_FILE);
-    // if (!background)
-    // {
-    //     fprintf(stderr, "failed to load background bitmap!\n");
-    //     exit(1);
-    // }
-    // win = al_load_bitmap(BACKGROUND_WIN_FILE);
-    // if (!win)
-    // {
-    //     fprintf(stderr, "failed to load win bitmap!\n");
-    //     exit(1);
-    // }
-    // loss = al_load_bitmap(BACKGROUND_LOSS_FILE);
-    // if (!loss)
-    // {
-    //     fprintf(stderr, "failed to load loss bitmap!\n");
-    //     exit(1);
-    // }
-    // bloco = al_load_bitmap(BLOCO_FILE);
-    // if (!bloco)
-    // {
-    //     fprintf(stderr, "failed to load laser bitmap!\n");
-    //     exit(1);
-    // }
 }
 void Draw::finish(void)
 {
     t.finaliza();
-    // al_destroy_bitmap(background);
-    // al_destroy_bitmap(win);
-    // al_destroy_bitmap(loss);
-    // al_destroy_bitmap(bloco);
-    // Closes the window
 }
 }; // namespace draw

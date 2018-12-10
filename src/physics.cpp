@@ -150,6 +150,11 @@ int trocouDirecao(Player *pacman)
 	}
 }
 
+int Physics::pacmanIsMoving()
+{
+	return moving;
+}
+
 void Physics::verify_collision(Player *pacman, std::map<Ponto_Mapa, Vertice> grafo, Block maze[][MAZE_SIDE_LENGHT])
 {
 	if (!moving)
@@ -188,7 +193,6 @@ void Physics::verify_collision(Player *pacman, std::map<Ponto_Mapa, Vertice> gra
 		}
 		if (maze[localPac.x][localPac.y].type == BlockTypes::portal)
 		{
-			printf("Portal %d\n", localPac.x);
 			if (localPac.x == 28)
 				localPac = {1, 17};
 			else

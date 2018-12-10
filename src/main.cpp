@@ -20,8 +20,8 @@ struct Game
     Block maze[MAZE_SIDE_WIDTH][MAZE_SIDE_LENGHT];
     ai::Ai ai;
     int score;
-    std::string str;
     Ponto_Mapa local_ant_pacman;
+    std::string str;
     // Init the main structures of the Game
     void init(void)
     {
@@ -35,6 +35,7 @@ struct Game
         ai.initContainsPacman(14, 20);
         init_player();
         phy.initPhy(14, 20);
+        atualizaCaminhos();
     }
 
     void init_ghost(int x, int y)
@@ -98,6 +99,8 @@ struct Game
                     player.cir.centro = {(float)l * MAZE_WALL_WIDTH + MOLDURE + (MAZE_WALL_WIDTH / 2), (float)i * MAZE_WALL_LENGHT + MOLDURE + (MAZE_WALL_LENGHT / 2)};
                     break;
                 case '#':
+                    if (ghosts.size() == 4)
+                        ghosts.clear();
                     maze[l][i].type = BlockTypes::path;
                     maze[l][i].hasPoint = true;
                     init_ghost(l, i);
@@ -112,15 +115,19 @@ struct Game
             }
     }
 
-    void move_ghosts(void)
+    void atualizaCaminhos()
     {
-
         ai.busca_largura(&(ai.grafo[phy.get_local_pac()]));
         for (auto &v : ghosts)
         {
             ai.caminho_curto(phy.get_local_pac(), v.pos_coord, &v.caminho);
             v.caminho.pop_back(); //Retira o elemento que contem o local do fantasma
         }
+    }
+
+    void move_ghosts(void)
+    {
+        atualizaCaminhos();
         phy.move_ghosts_2(&ghosts);
     }
 
@@ -133,6 +140,16 @@ struct Game
         if (player.state == State::menu)
             draw.draw_main_menu(&player);
 
+        else if (player.state == State::init)
+        {
+            score = 0;
+            load_maze();
+            ai.initContainsPacman(14, 20);
+            phy.initPhy(14, 20);
+            player.state = State::menu;
+            str.clear();
+            atualizaCaminhos();
+        }
         else if (player.state == State::playing)
         {
             int score_ant = score;
@@ -143,27 +160,27 @@ struct Game
             score = phy.pacman_score(&player, maze, score);
             if (score_ant != score)
             {
+                phy.win_condition(&player, maze);
                 draw.t.play_wakasfx();
             }
             draw.draw_score(score);
-            phy.win_condition(&player, maze);
             phy.defeat_condition(&player, &ghosts);
         }
         else if (player.state == State::score)
+        {
+            draw.scoreboard_bubblesort(&scores);
             draw.draw_scoreboard(&player, &scores);
+        }
         else if (player.state == State::win)
-            draw.draw_win(&player, score, str);
+            draw.draw_win(&player, score, &str);
         else if (player.state == State::defeat)
-            draw.draw_defeat(&player, score, str);
+            draw.draw_defeat(&player, score, &str);
 
         // Updates the screen
         draw.t.mostra();
         draw.draw_background();
         draw.t.espera(16.66);
     }
-
-    // Verify if the game ended
-    bool verifyEnd(void) { return true; }
 };
 
 int main(int argc, char **argv)

@@ -31,6 +31,7 @@ enum State
     nothing,
     score,
     playing,
+    init,
     win,
     end,
     defeat,
@@ -74,7 +75,7 @@ struct Player
 struct Scores
 {
     std::string *names;
-    int *points;
+    int *points, size;
 };
 
 struct Pacman

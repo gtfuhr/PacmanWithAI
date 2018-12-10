@@ -14,6 +14,7 @@ struct Physics
   int ghostMudouDeNo(Ghost *ghost);
   void initPhy(int x, int y);
   Ponto_Mapa get_local_pac(void);
+  int pacmanIsMoving(void);
 
 private:
   int block_contain_pacman(int x, int y, Player pacman);
