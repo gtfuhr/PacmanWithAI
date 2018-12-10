@@ -73,16 +73,16 @@ struct Game
                 {
                 case '-':
                     maze[l][i].type = BlockTypes::path;
-                    maze[l][i].hasPoint = true;
+                    maze[l][i].hasPoint = false;
                     break;
                 case '+':
                     maze[l][i].type = BlockTypes::intersection;
-                    maze[l][i].hasPoint = true;
+                    maze[l][i].hasPoint = false;
                     maze[l][i].hasBonus = false;
                     if (numOfBonus < MAX_NUM_OF_BONUS && sin(rand()) > 0.9)
                     {
                         maze[l][i].hasPoint = false;
-                        maze[l][i].hasBonus = true;
+                        maze[l][i].hasBonus = false;
                         numOfBonus++;
                     }
 
@@ -92,7 +92,7 @@ struct Game
                     break;
                 case '|':
                     maze[l][i].type = BlockTypes::path;
-                    maze[l][i].hasPoint = true;
+                    maze[l][i].hasPoint = false;
                     break;
                 case '*':
                     maze[l][i].type = BlockTypes::path;
@@ -120,6 +120,7 @@ struct Game
         ai.busca_largura(&(ai.grafo[phy.get_local_pac()]));
         for (auto &v : ghosts)
         {
+            v.caminho.clear();
             ai.caminho_curto(phy.get_local_pac(), v.pos_coord, &v.caminho);
             v.caminho.pop_back(); //Retira o elemento que contem o local do fantasma
         }

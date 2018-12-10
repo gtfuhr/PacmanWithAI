@@ -36,7 +36,7 @@ private:
   void main_menu_text_efect(Ponto local);
 
   const char *options[3] = {"PLAY",
-                            "SCORE",
+                            "SCORES",
                             "QUIT"};
 
   ALLEGRO_BITMAP *background, *bloco,
