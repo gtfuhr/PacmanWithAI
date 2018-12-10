@@ -29,14 +29,26 @@ Ponto centroBloco(Ponto_Mapa coordenadas)
 	Ponto centro{(x1 + x2) / 2, (y1 + y2) / 2};
 	return centro;
 }
-double distancia2d(Ponto p1, Ponto p2)
+double Physics::distancia2d(Ponto p1, Ponto p2)
 {
 	double parte1 = pow((p1.x - p2.x), 2);
 	double parte2 = pow((p1.y - p2.y), 2);
 	return sqrt(parte1 + parte2);
 }
 
-int block_contain_pacman(int x, int y, Player pacman)
+void Physics::defeat_condition(Player *player, std::list<Ghost> *ghosts)
+{
+	for (auto &ghost : (*ghosts))
+	{
+		if (distancia2d(ghost.cir.centro, (*player).cir.centro) < PACMAN_RADIUS)
+		{
+			printf("MORREURJOHAIUDSHASIUDH");
+			player->state = State::end;
+		}
+	}
+}
+
+int Physics::block_contain_pacman(int x, int y, Player pacman)
 {
 	Ponto centro_bloco = centroBloco({x, y});
 	double dist = distancia2d(centro_bloco, pacman.cir.centro);
@@ -45,7 +57,7 @@ int block_contain_pacman(int x, int y, Player pacman)
 	return 0;
 }
 
-int block_contain_ghost(int x, int y, Ghost *ghost)
+int Physics::block_contain_ghost(int x, int y, Ghost *ghost)
 {
 	Ponto centro_bloco = centroBloco({x, y});
 	double dist = distancia2d(centro_bloco, ghost->cir.centro);
@@ -262,7 +274,7 @@ void move_ghost(Ghost *ghost, int move_x, int move_y)
 		ghost->cir.centro.y += ghost->speed;
 }
 
-int ghostMudouDeNo(Ghost *ghost)
+int Physics::ghostMudouDeNo(Ghost *ghost)
 {
 	if (ghost->move_x < 0)
 	{

@@ -140,12 +140,13 @@ struct Game
             phy.verify_collision(&player, ai.grafo, maze);
             move_ghosts();
             score = phy.pacman_score(&player, maze, score);
-            if (score_ant == score)
+            if (score_ant != score)
             {
                 draw.t.play_wakasfx();
             }
             draw.draw_score(score);
             phy.win_condition(&player, maze);
+            phy.defeat_condition(&player, &ghosts);
         }
         else if (player.state == State::score)
             draw.draw_scoreboard(&player, &scores);
