@@ -105,6 +105,9 @@ struct Game
                 case ' ':
                     maze[l][i].type = BlockTypes::path;
                     break;
+                case 'P':
+                    maze[l][i].type = BlockTypes::portal;
+                    break;
                 }
             }
     }

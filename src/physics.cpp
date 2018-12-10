@@ -152,7 +152,6 @@ int trocouDirecao(Player *pacman)
 
 void Physics::verify_collision(Player *pacman, std::map<Ponto_Mapa, Vertice> grafo, Block maze[][MAZE_SIDE_LENGHT])
 {
-
 	if (!moving)
 	{
 		move_pacman(pacman);
@@ -162,7 +161,6 @@ void Physics::verify_collision(Player *pacman, std::map<Ponto_Mapa, Vertice> gra
 
 	if (moving == 1)
 	{
-
 		if (pacman->move_x < 0)
 		{
 			pacman->cir.centro.x -= pacman->speed;
@@ -187,6 +185,14 @@ void Physics::verify_collision(Player *pacman, std::map<Ponto_Mapa, Vertice> gra
 		{
 			pacman->move_x = 0;
 			pacman->move_y = 0;
+		}
+		if (maze[localPac.x][localPac.y].type == BlockTypes::portal)
+		{
+			printf("Portal %d\n", localPac.x);
+			if (localPac.x == 28)
+				localPac = {1, 17};
+			else
+				localPac = {27, 17};
 		}
 	}
 	if (trocouDirecao(pacman) && moving == 1)
@@ -254,8 +260,6 @@ void detectaDirecaoGhost(Ponto_Mapa ghost, Ponto_Mapa passo, int *move_x, int *m
 		(*move_y) = 1;
 		(*move_x) = 0;
 	}
-	// (*move_y) = 0;
-	// (*move_x) = 0;
 }
 
 void move_ghost(Ghost *ghost, int move_x, int move_y)

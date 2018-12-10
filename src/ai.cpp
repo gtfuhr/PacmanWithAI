@@ -34,6 +34,8 @@ void Ai::init_vertices(Block maze[][MAZE_SIDE_LENGHT])
 
             else if (maze[x][y].type == BlockTypes::intersection)
                 init_vertex(x, y);
+            else if (maze[x][y].type == BlockTypes::portal)
+                init_vertex(x, y);
         }
     init_arestas(maze);
 }
