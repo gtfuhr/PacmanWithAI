@@ -19,6 +19,7 @@ struct Draw
   void scoreboard_bubblesort(Scores *scores);
   void draw_end();
   void draw_win(Player *player, int score, std::string str);
+  void draw_defeat(Player *player, int score, std::string str);
   void draw_help(void);
   void load_background(void);
   void finish(void);

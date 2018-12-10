@@ -148,9 +148,9 @@ struct Game
         else if (player.state == State::score)
             draw.draw_scoreboard(&player, &scores);
         else if (player.state == State::win)
-        {
             draw.draw_win(&player, score, str);
-        }
+        else if (player.state == State::defeat)
+            draw.draw_defeat(&player, score, str);
 
         // Updates the screen
         draw.t.mostra();

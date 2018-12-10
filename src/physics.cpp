@@ -42,8 +42,7 @@ void Physics::defeat_condition(Player *player, std::list<Ghost> *ghosts)
 	{
 		if (distancia2d(ghost.cir.centro, (*player).cir.centro) < PACMAN_RADIUS)
 		{
-			printf("MORREURJOHAIUDSHASIUDH");
-			player->state = State::end;
+			player->state = State::defeat;
 		}
 	}
 }

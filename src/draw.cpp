@@ -1,10 +1,10 @@
 #include <string>
 #include "draw.hpp"
 
-const Cor ghosts_colors[4] = {{255, 0, 0},     //BLINKY
-                              {73, 0, 255},    //INKY
-                              {255, 113, 206}, //PINKY
-                              {0, 255, 249}};  //CLYDE
+const Cor ghosts_colors[4] = {{208, 62, 25},     //BLINKY
+                              {219, 133, 28},    //INKY
+                              {234, 130, 229},   //PINKY
+                              {70, 191, 238}};   //CLYDE
 
 namespace draw
 {
@@ -70,7 +70,7 @@ void Draw::draw_wall(int x, int y)
 {
     Retangulo wall;
     wall.tam = {MAZE_WALL_WIDTH, MAZE_WALL_LENGHT};
-    Cor cor_parede = {0, 0, 10};
+    Cor cor_parede = {0, 0, 255};
     t.cor(cor_parede);
     wall.pos = {(float)x * MAZE_WALL_WIDTH + MOLDURE, (float)y * MAZE_WALL_LENGHT + MOLDURE};
     t.retangulo(wall);
@@ -325,8 +325,22 @@ void Draw::draw_win(Player *player, int score, std::string str)
     t.texto({SCREEN_WIDTH / 2, 30}, "YOU WIN");
     t.texto2({SCREEN_WIDTH / 2, (SCREEN_LENGTH / 2) - 30}, txt.c_str());
 
-    entrada_txt(player, str);
-    imprime_centralizado(str);
+    /*entrada_txt(player, str);
+    imprime_centralizado(str);*/
+}
+
+void Draw::draw_defeat(Player *player, int score, std::string str)
+{
+    std::string txt = "SCORE: ";
+    std::string string_score = std::to_string(score);
+    txt += string_score;
+
+    t.cor({255, 255, 0});
+    t.texto({SCREEN_WIDTH / 2, 30}, "YOU LOSE");
+    t.texto2({SCREEN_WIDTH / 2, (SCREEN_LENGTH / 2) - 30}, txt.c_str());
+
+    /*entrada_txt(player, str);
+    imprime_centralizado(str);*/
 }
 
 void Draw::draw_help(void)

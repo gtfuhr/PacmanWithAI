@@ -292,15 +292,15 @@ void Tela::linha(Ponto p1, Ponto p2)
     al_draw_line(XU2X(p1.x), YU2X(p1.y), XU2X(p2.x), YU2X(p2.y), ac_cor, 0.0);
 }
 
-#define AJEITA(x) (x < 0 ? 0 : (x > 1 ? 1 : x))
+//#define AJEITA(x) (x < 0 ? 0 : (x > 1 ? 1 : x))
 void Tela::cor(Cor c)
 {
     /* altera a cor padrao */
-    int R, G, B;
+    /*int R, G, B;
     R = AJEITA(c.r) * ((1 << B_R) - 1);
     G = AJEITA(c.g) * ((1 << B_G) - 1);
-    B = AJEITA(c.b) * ((1 << B_B) - 1);
-    ac_cor = al_map_rgb(R, G, B);
+    B = AJEITA(c.b) * ((1 << B_B) - 1);*/
+    ac_cor = al_map_rgb(c.r, c.g, c.b);
 }
 
 int Tela::strlen(const char *s) const

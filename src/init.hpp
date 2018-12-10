@@ -33,6 +33,7 @@ enum State
     playing,
     win,
     end,
+    defeat,
     pause_state
 };
 
