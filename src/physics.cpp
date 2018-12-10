@@ -224,12 +224,12 @@ void Physics::win_condition(Player *player, Block maze[][MAZE_SIDE_LENGHT])
 			{
 				if (maze[i][j].hasPoint == true)
 				{
-					// return;
+					return;
 				}
 			}
 		}
 	}
-	// player->state = State::win;
+	player->state = State::win;
 }
 
 void detectaDirecaoGhost(Ponto_Mapa ghost, Ponto_Mapa passo, int *move_x, int *move_y)

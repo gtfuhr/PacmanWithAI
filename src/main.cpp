@@ -99,6 +99,7 @@ struct Game
                     break;
                 case '#':
                     maze[l][i].type = BlockTypes::path;
+                    maze[l][i].hasPoint = true;
                     init_ghost(l, i);
                     break;
                 case ' ':

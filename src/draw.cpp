@@ -1,9 +1,9 @@
 #include <string>
 #include "draw.hpp"
 
-const Cor ghosts_colors[4] = {{255, 0, 0},     //BLINKY
-                              {255, 184, 82},    //INKY
-                              {255, 184, 255},   //PINKY
+const Cor ghosts_colors[4] = {{255, 0, 0},         //BLINKY
+                              {255, 157, 0},      //INKY
+                              {249, 162, 244},   //PINKY
                               {0, 255, 255}};   //CLYDE
 
 namespace draw
@@ -105,7 +105,7 @@ void Draw::draw_main_menu(Player *player)
     {
         if (sin(get_ms() / 75) > -0.5)
         {
-            t.cor({220, 0, 0});
+            t.cor({255, 0, 0});
             t.texto2({SCREEN_WIDTH / 2, 345}, "PRESS 'ENTER'");
         }
         if (player->key == ALLEGRO_KEY_ENTER)
