@@ -125,10 +125,7 @@ struct Game
     {
         // Read last key
         player.key = draw.t.tecla();
-        // if (player.key != 0)
-        //     std::cout << player.key << std::endl;
         draw.t.limpa();
-        // The 'Q' key ends the game
         if (player.state == State::menu)
             draw.draw_main_menu(&player);
 
