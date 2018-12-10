@@ -327,6 +327,11 @@ void Draw::draw_win(Player *player, int score, std::string str)
     t.texto2({SCREEN_WIDTH / 2, (SCREEN_LENGTH / 2) - 40}, txt.c_str());
     t.texto2({SCREEN_WIDTH / 2, SCREEN_LENGTH / 2}, "ENTER YOUR NAME:");
 
+    if (sin(get_ms() / 75) > -0.5)
+    {
+        t.texto3({SCREEN_WIDTH / 2, (SCREEN_LENGTH / 2) + 120}, "PRESS 'ENTER' WHEN READY");
+    }
+
     /*entrada_txt(player, str);
     imprime_centralizado(str);*/
 }
@@ -341,6 +346,11 @@ void Draw::draw_defeat(Player *player, int score, std::string str)
     t.texto({SCREEN_WIDTH / 2, 40}, "YOU LOSE");
     t.texto2({SCREEN_WIDTH / 2, (SCREEN_LENGTH / 2) - 40}, txt.c_str());
     t.texto2({SCREEN_WIDTH / 2, SCREEN_LENGTH / 2}, "ENTER YOUR NAME:");
+
+    if (sin(get_ms() / 75) > -0.5)
+    {
+        t.texto3({SCREEN_WIDTH / 2, (SCREEN_LENGTH / 2) + 120}, "PRESS 'ENTER' WHEN READY");
+    }
 
     /*entrada_txt(player, str);
     imprime_centralizado(str);*/
