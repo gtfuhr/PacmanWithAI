@@ -1,10 +1,10 @@
 #include <string>
 #include "draw.hpp"
 
-const Cor ghosts_colors[4] = {{208, 62, 25},     //BLINKY
-                              {219, 133, 28},    //INKY
-                              {234, 130, 229},   //PINKY
-                              {70, 191, 238}};   //CLYDE
+const Cor ghosts_colors[4] = {{255, 0, 0},     //BLINKY
+                              {255, 184, 82},    //INKY
+                              {255, 184, 255},   //PINKY
+                              {0, 255, 255}};   //CLYDE
 
 namespace draw
 {
@@ -35,6 +35,7 @@ void Draw::draw_ghosts(std::list<Ghost> ghosts)
     {
         t.cor(ghosts_colors[i_color]);
         t.circulo(it->cir);
+        t.retangulo({{float(it->cir.centro.x - PACMAN_RADIUS + 0.25), it->cir.centro.y}, {float(PACMAN_RADIUS*2 - 0.25), PACMAN_RADIUS}});
     }
 }
 
@@ -311,7 +312,7 @@ void Draw::imprime_centralizado(std::string str)
 {
     if (str.length() > 0)
     {
-        t.texto2({SCREEN_WIDTH / 2, SCREEN_LENGTH / 2}, str.c_str());
+        t.texto2({SCREEN_WIDTH / 2, (SCREEN_LENGTH / 2) + 30}, str.c_str());
     }
 }
 
@@ -322,8 +323,9 @@ void Draw::draw_win(Player *player, int score, std::string str)
     txt += string_score;
 
     t.cor({255, 255, 0});
-    t.texto({SCREEN_WIDTH / 2, 30}, "YOU WIN");
-    t.texto2({SCREEN_WIDTH / 2, (SCREEN_LENGTH / 2) - 30}, txt.c_str());
+    t.texto({SCREEN_WIDTH / 2, 40}, "YOU WIN");
+    t.texto2({SCREEN_WIDTH / 2, (SCREEN_LENGTH / 2) - 40}, txt.c_str());
+    t.texto2({SCREEN_WIDTH / 2, SCREEN_LENGTH / 2}, "ENTER YOUR NAME:");
 
     /*entrada_txt(player, str);
     imprime_centralizado(str);*/
@@ -336,8 +338,9 @@ void Draw::draw_defeat(Player *player, int score, std::string str)
     txt += string_score;
 
     t.cor({255, 255, 0});
-    t.texto({SCREEN_WIDTH / 2, 30}, "YOU LOSE");
-    t.texto2({SCREEN_WIDTH / 2, (SCREEN_LENGTH / 2) - 30}, txt.c_str());
+    t.texto({SCREEN_WIDTH / 2, 40}, "YOU LOSE");
+    t.texto2({SCREEN_WIDTH / 2, (SCREEN_LENGTH / 2) - 40}, txt.c_str());
+    t.texto2({SCREEN_WIDTH / 2, SCREEN_LENGTH / 2}, "ENTER YOUR NAME:");
 
     /*entrada_txt(player, str);
     imprime_centralizado(str);*/
