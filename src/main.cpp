@@ -4,7 +4,11 @@
 #include "init.hpp"
 #include <fstream>
 
-// bool operator<(const Ponto_Mapa &a, const Ponto_Mapa &b)
+//Ja que o Ponto_mapa é usado como uma chave do Map, ele precisa ter uma forma de comparacao
+inline bool operator<(const Ponto_Mapa &a, const Ponto_Mapa &b)
+{
+    return std::tie(a.x, a.y) < std::tie(b.x, b.y);
+}
 
 struct Game
 {
@@ -17,7 +21,7 @@ struct Game
     ai::Ai ai;
     int score;
     std::string str;
-
+    Ponto_Mapa local_ant_pacman;
     // Init the main structures of the Game
     void init(void)
     {
@@ -36,7 +40,11 @@ struct Game
     void init_ghost(int x, int y)
     {
         Ghost ghost;
-        ghost.pos = {float(x), float(y)};
+        ghost.cir.centro = {(float)x * MAZE_WALL_WIDTH + MOLDURE + (MAZE_WALL_WIDTH / 2), (float)y * MAZE_WALL_LENGHT + MOLDURE + (MAZE_WALL_LENGHT / 2)};
+        ghost.cir.raio = PACMAN_RADIUS;
+        ghost.pos_coord = {x, y};
+        ghost.moving = 0;
+        ghost.speed = 1;
         ghosts.push_back(ghost);
     }
 
@@ -102,6 +110,13 @@ struct Game
 
     void move_ghosts(void)
     {
+
+        ai.busca_largura(&(ai.grafo[phy.get_local_pac()]));
+        for (auto &v : ghosts)
+        {
+            ai.caminho_curto(phy.get_local_pac(), v.pos_coord, &v.caminho);
+            v.caminho.pop_back(); //Retira o elemento que contem o local do fantasma
+        }
         phy.move_ghosts_2(&ghosts);
     }
 
@@ -110,8 +125,8 @@ struct Game
     {
         // Read last key
         player.key = draw.t.tecla();
-        if(player.key != 0)
-            std::cout << player.key << std::endl;
+        // if (player.key != 0)
+        //     std::cout << player.key << std::endl;
         draw.t.limpa();
         // The 'Q' key ends the game
         if (player.state == State::menu)
@@ -125,7 +140,8 @@ struct Game
             phy.verify_collision(&player, ai.grafo, maze);
             move_ghosts();
             score = phy.pacman_score(&player, maze, score);
-            if(score_ant == score){
+            if (score_ant == score)
+            {
                 draw.t.play_wakasfx();
             }
             draw.draw_score(score);
@@ -133,7 +149,8 @@ struct Game
         }
         else if (player.state == State::score)
             draw.draw_scoreboard(&player, &scores);
-        else if (player.state == State::win){
+        else if (player.state == State::win)
+        {
             draw.draw_win(&player, score, str);
         }
 

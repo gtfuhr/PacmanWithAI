@@ -22,6 +22,7 @@ void Ai::init_vertex(int x, int y)
     grafo[vertice] = Vertice();
     grafo[vertice].dist = 0;
     grafo[vertice].chave = vertice;
+    grafo[vertice].ant = NULL;
 }
 void Ai::init_vertices(Block maze[][MAZE_SIDE_LENGHT])
 {
@@ -30,6 +31,7 @@ void Ai::init_vertices(Block maze[][MAZE_SIDE_LENGHT])
         {
             if (maze[x][y].type == BlockTypes::path)
                 init_vertex(x, y);
+
             else if (maze[x][y].type == BlockTypes::intersection)
                 init_vertex(x, y);
         }
@@ -38,7 +40,7 @@ void Ai::init_vertices(Block maze[][MAZE_SIDE_LENGHT])
 
 void Ai::init_aresta(Ponto_Mapa original, Ponto_Mapa nova_conexao)
 {
-    grafo[original].arestas.push_back(grafo[nova_conexao]);
+    grafo[original].arestas.push_back(&(grafo[nova_conexao]));
 }
 
 void Ai::check_arestas(int x, int y)
@@ -83,34 +85,40 @@ void Ai::init_arestas(Block maze[][MAZE_SIDE_LENGHT])
 // recebe o grafo, o vertice de fonte 's'
 void Ai::busca_largura(Vertice *s)
 {
-    std::queue<Vertice> f;
+    std::list<Vertice *> f;
+
     for (auto it = grafo.begin(); it != grafo.end(); ++it)
+    {
         it->second.cor = cor_grafo::BRANCO;
-    f.emplace(*s);
+        if (it->second.chave.x == (*s).chave.x && it->second.chave.y == (*s).chave.y)
+            it->second.cor = cor_grafo::PRETO;
+    }
+    f.push_back(s);
     while (!f.empty())
     {
-        Vertice u = f.front();
-        f.pop();
-        for (auto &v : u.arestas)
+        Vertice *u = f.front();
+        for (auto v = u->arestas.begin(); v != u->arestas.end(); ++v)
         {
-            if (v.cor == cor_grafo::BRANCO)
+            if ((*v)->cor == cor_grafo::BRANCO)
             {
-                v.cor = cor_grafo::CINZA;
-                v.dist = u.dist + 1;
-                v.ant = &u;
-                f.emplace(v);
+                (*v)->cor = cor_grafo::CINZA;
+                (*v)->dist = u->dist + 1;
+                (*v)->ant = u;
+                f.push_back(&(**v));
             }
         }
-        u.cor = cor_grafo::PRETO;
+        u->cor = cor_grafo::PRETO;
+        f.pop_front();
     }
 }
-void Ai::caminho_curto(Ponto_Mapa fonte, Ponto_Mapa destino)
+void Ai::caminho_curto(Ponto_Mapa fonte, Ponto_Mapa destino, std::list<Ponto_Mapa> *caminho)
 {
     Vertice *s = &(grafo[fonte]);
     Vertice *v = &(grafo[destino]);
+
     if (s == v)
     {
-        printf("(%d,%d) ", s->chave.x, s->chave.y);
+        (*caminho).push_back({s->chave.x, s->chave.y});
         return;
     }
     if (v->ant == NULL)
@@ -119,8 +127,8 @@ void Ai::caminho_curto(Ponto_Mapa fonte, Ponto_Mapa destino)
     }
     else
     {
-        caminho_curto(fonte, v->ant->chave);
-        printf("(%d,%d) ", v->chave.x, v->chave.y);
+        caminho_curto(fonte, v->ant->chave, caminho);
+        (*caminho).push_back({v->chave.x, v->chave.y});
     }
 }
 

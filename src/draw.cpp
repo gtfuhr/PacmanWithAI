@@ -33,11 +33,8 @@ void Draw::draw_ghosts(std::list<Ghost> ghosts)
     int i_color = 0;
     for (auto it = ghosts.begin(); it != ghosts.end(); it++, i_color++)
     {
-        Circulo ghost;
-        ghost.centro = {(float)it->pos.x * MAZE_WALL_WIDTH + MOLDURE + (MAZE_WALL_WIDTH / 2), (float)it->pos.y * MAZE_WALL_LENGHT + MOLDURE + (MAZE_WALL_LENGHT / 2)};
         t.cor(ghosts_colors[i_color]);
-        ghost.raio = 6;
-        t.circulo(ghost);
+        t.circulo(it->cir);
     }
 }
 
@@ -53,7 +50,7 @@ void Draw::draw_map(Block maze[][MAZE_SIDE_LENGHT])
                 break;
 
             case BlockTypes::path:
-                if(maze[x][y].hasPoint == true)
+                if (maze[x][y].hasPoint == true)
                     draw_point(x, y, false);
                 break;
 
@@ -267,15 +264,16 @@ void Draw::draw_scoreboard(Player *player, Scores *scores)
 }
 
 void Draw::draw_score(int score)
-{   
+{
     t.cor({255, 255, 0});
     std::string txt = "SCORE: ";
     std::string string_score = std::to_string(score);
     txt += string_score;
-    t.texto3({SCREEN_WIDTH/2, 5}, txt.c_str());
+    t.texto3({SCREEN_WIDTH / 2, 5}, txt.c_str());
 }
 
-void entrada_txt(Player *player, std::string str){
+void entrada_txt(Player *player, std::string str)
+{
     if (player->key != 0)
     {
         if (str.length() <= 7)
@@ -283,7 +281,7 @@ void entrada_txt(Player *player, std::string str){
             std::string aux;
             //char temp[] = {evento.keyboard.unichar, '\0'};
             if (player->key >= 1 && player->key <= 26)
-            {   
+            {
                 aux = 'A' + player->key - 1;
                 str += aux;
             }
@@ -301,7 +299,7 @@ void entrada_txt(Player *player, std::string str){
             //std::cout << aux << std::endl;
             std::cout << str << std::endl;
         }
- 
+
         if (player->key == 63 && str.length() != 0)
         {
             str[str.length() - 1] = '\0';
@@ -309,14 +307,16 @@ void entrada_txt(Player *player, std::string str){
     }
 }
 
-void Draw::imprime_centralizado(std::string str){
+void Draw::imprime_centralizado(std::string str)
+{
     if (str.length() > 0)
     {
         t.texto2({SCREEN_WIDTH / 2, SCREEN_LENGTH / 2}, str.c_str());
     }
 }
 
-void Draw::draw_win(Player *player, int score, std::string str){
+void Draw::draw_win(Player *player, int score, std::string str)
+{
     std::string txt = "SCORE: ";
     std::string string_score = std::to_string(score);
     txt += string_score;
@@ -324,7 +324,7 @@ void Draw::draw_win(Player *player, int score, std::string str){
     t.cor({255, 255, 0});
     t.texto({SCREEN_WIDTH / 2, 30}, "YOU WIN");
     t.texto2({SCREEN_WIDTH / 2, (SCREEN_LENGTH / 2) - 30}, txt.c_str());
-    
+
     entrada_txt(player, str);
     imprime_centralizado(str);
 }

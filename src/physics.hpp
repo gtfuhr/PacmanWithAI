@@ -10,6 +10,7 @@ struct Physics
   void move_pacman(Player *pacman);
   void win_condition(Player *player, Block maze[][MAZE_SIDE_LENGHT]);
   void initPhy(int x, int y);
+  Ponto_Mapa get_local_pac(void);
 
 private:
   int pacmanMudouDeNo(Player *pacman);

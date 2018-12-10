@@ -82,16 +82,21 @@ struct Pacman
     Circulo circle;
 };
 
-struct Ghost
-{
-    Ponto pos;
-    Cor color;
-};
-
 struct Ponto_Mapa
 {
     int x, y;
 };
+
+struct Ghost
+{
+    Circulo cir;
+    Ponto_Mapa pos_coord;
+    int moving, move_x, move_y;
+    std::list<Ponto_Mapa> caminho;
+    float speed;
+    Cor color;
+};
+
 struct Vertice
 {
     int dist;
@@ -99,7 +104,7 @@ struct Vertice
     Ponto_Mapa chave;
     bool containsPacman;
     cor_grafo cor;
-    std::list<Vertice> arestas;
+    std::list<Vertice *> arestas;
 };
 
 #include "physics.hpp"
