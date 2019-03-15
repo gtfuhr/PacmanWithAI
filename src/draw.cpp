@@ -1,6 +1,7 @@
 #include <string>
 #include <fstream>
 #include "draw.hpp"
+#include <allegro5/allegro_image.h>
 
 const Cor ghosts_colors[4] = {{255, 0, 0},     //BLINKY
                               {255, 157, 0},   //INKY
@@ -20,6 +21,20 @@ void Draw::draw_figures(Player player, std::list<Ghost> ghosts)
 {
     draw_pacman(player);
     draw_ghosts(ghosts);
+}
+
+void load_pacman_sprites(ALLEGRO_BITMAP **sprites)
+{
+    al_init_image_addon();
+    std::string nome_imagem("pac");
+    char numero_imagem[10];
+    for (int i = 0; i < PACMAN_SPRITES; i++)
+    {
+        sprintf(numero_imagem, "%d", i);
+        nome_imagem.append(numero_imagem);
+        nome_imagem.append(".png");
+        sprites[i] = al_load_bitmap(nome_imagem.c_str());
+    }
 }
 
 void Draw::draw_pacman(Player pacPlayer)
@@ -101,7 +116,7 @@ void Draw::draw_main_menu(Player *player)
     t.cor({0, 0, 255});
     t.texto({SCREEN_WIDTH / 2, 125}, "PAC  MAN");
     t.image_menu({SCREEN_WIDTH / 2 - 50, 80});
-
+    //draw_palms();
     if (player->option == 0)
     {
         if (sin(get_ms() / 75) > -0.5)
@@ -156,6 +171,12 @@ void Draw::draw_main_menu(Player *player)
         }
     }
 }
+
+// void Draw::draw_palms()
+// {
+//     int time_seed = get_ms();
+//     for (i = 0; i < time_seed)
+// }
 
 void Draw::draw_option_switch(int option)
 {

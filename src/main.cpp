@@ -44,6 +44,7 @@ struct Game
         ghost.cir.centro = {(float)x * MAZE_WALL_WIDTH + MOLDURE + (MAZE_WALL_WIDTH / 2), (float)y * MAZE_WALL_LENGHT + MOLDURE + (MAZE_WALL_LENGHT / 2)};
         ghost.cir.raio = PACMAN_RADIUS;
         ghost.pos_coord = {x, y};
+
         ghost.moving = 0;
         ghost.speed = 1;
         ghosts.push_back(ghost);
@@ -57,6 +58,7 @@ struct Game
         player.move_y = 0;
         player.speed = 3;
         player.cir.raio = PACMAN_RADIUS;
+        // draw.load_pacman_sprites(player.sprites);
     }
 
     void load_maze()
@@ -73,11 +75,11 @@ struct Game
                 {
                 case '-':
                     maze[l][i].type = BlockTypes::path;
-                    maze[l][i].hasPoint = false;
+                    maze[l][i].hasPoint = true;
                     break;
                 case '+':
                     maze[l][i].type = BlockTypes::intersection;
-                    maze[l][i].hasPoint = false;
+                    maze[l][i].hasPoint = true;
                     maze[l][i].hasBonus = false;
                     if (numOfBonus < MAX_NUM_OF_BONUS && sin(rand()) > 0.9)
                     {
@@ -92,7 +94,7 @@ struct Game
                     break;
                 case '|':
                     maze[l][i].type = BlockTypes::path;
-                    maze[l][i].hasPoint = false;
+                    maze[l][i].hasPoint = true;
                     break;
                 case '*':
                     maze[l][i].type = BlockTypes::path;

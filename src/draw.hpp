@@ -23,6 +23,7 @@ struct Draw
   void draw_help(void);
   void load_background(void);
   void finish(void);
+  void load_pacman_sprites(ALLEGRO_BITMAP **sprites);
   int get_ms();
 
 private:
@@ -34,6 +35,7 @@ private:
   void draw_point(int i, int j, bool bonus);
   void draw_option_switch(int option);
   void main_menu_text_efect(Ponto local);
+  void draw_palms(void);
 
   const char *options[3] = {"PLAY",
                             "SCORES",

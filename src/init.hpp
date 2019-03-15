@@ -9,6 +9,7 @@
 #define MOLDURE 30
 #define MAX_NUM_OF_BONUS 12
 #define PACMAN_RADIUS 7
+#define PACMAN_SPRITES 5
 
 #include "tela.hpp"
 
@@ -70,6 +71,7 @@ struct Player
     int key; // Last key pressed by the user
     int option, score;
     time_t time;
+    ALLEGRO_BITMAP *sprites[PACMAN_SPRITES];
 };
 
 struct Scores
